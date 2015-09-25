@@ -9,27 +9,41 @@
  
 <html>
     <head> 
-        <title>Canvas - Wrecking Ball</title>
+        <title>Melon Boy - Physics Shred</title>
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="styleSheet.css">
          
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
          
         <script>
-            $(document).ready(function() {             
+            $(window).load(function() {             
             var gravity = 9.8;
             var boxWidth = 595;
             var boxHeight = 450;
             var canvas = document.getElementById('myCanvas');
             var context = canvas.getContext('2d');  
             var velocity = 0;
-            var ticNumber = 10;
+            var ticNumber = 5;
             var tics = 0;
             var dragFactor = .0004;
             var dragFlag = true;
             var prev=0;            
             
             var DestructionBall = function(bs, bm, x, y, vx, vy){
+                    this.BallImg=new Image();                    
+                    this.BallImg.src = "gourd.png";
+                    this.BallImgD1=new Image();                    
+                    this.BallImgD1.src = "gourdD1.png";
+                    this.BallImgD2=new Image();                    
+                    this.BallImgD2.src = "gourdD2.png";
+                    this.BallImgD3=new Image();                    
+                    this.BallImgD3.src = "gourdD3.png";
+                    this.BallImgD4=new Image();                    
+                    this.BallImgD4.src = "gourdD4.png";
+                    this.BallImgD5=new Image();                    
+                    this.BallImgD5.src = "gourdD5.png";
+                    this.SkaterImg=new Image();
+                    this.SkaterImg.src = "gourdon.png";
                     this.ballSize = bs;
                     this.ballMass = bm;
                     this.positionX = x; 
@@ -40,22 +54,78 @@
                     this.velocityY = vy;      
                  };
             
-            DestructionBall.prototype.draw = function(context, shade){                
+            DestructionBall.prototype.draw = function(context, rPend, rBall, isBoy){                
+               
+                /*context.beginPath();
+                  context.arc(0, rPend, rBall, 0, Math.PI*2, false);
+                  context.fillStyle = "blue";
+                  context.fill();
+                context.stroke();
+                */
+                if (isBoy)
+                     if(shatterFlag)
+                    {
+                        if (maxForceBall<.5)
+                            context.drawImage(this.BallImg,-rBall,-rBall+rPend, rBall*2, rBall*2);                           
+                        else if(maxForceBall<2)
+                            context.drawImage(this.BallImgD1,-rBall,-rBall+rPend, rBall*2, rBall*2);
+                        else if(maxForceBall<4)
+                            context.drawImage(this.BallImgD2,-rBall,-rBall+rPend, rBall*2, rBall*2);
+                        else if(maxForceBall<7)
+                            context.drawImage(this.BallImgD3,-rBall,-rBall+rPend, rBall*2, rBall*2);
+                        else if(maxForceBall<10)
+                            context.drawImage(this.BallImgD4,-rBall,-rBall+rPend, rBall*2, rBall*2);
+                        else 
+                            context.drawImage(this.BallImgD5,-rBall,-rBall+rPend, rBall*2, rBall*2);
+                    }
+                    else
+                        context.drawImage(this.BallImg,-rBall,-rBall+rPend, rBall*2, rBall*2);
+                else                   
+                    context.drawImage(this.SkaterImg,-rBall*3+20,-rBall*5+rPend+3, rBall*4, rBall*6);
+                
+            };       
+            
+            var MelonPiece = function(x, y, vx, vy, size, rotation)
+            {
+                    this.positionX = x; 
+                    this.positionY = y; 
+                    this.velocityX = vx;
+                    this.velocityY = vy;   
+                    this.size = size;   
+                    this.rotationAngle = rotation;
+                    this.PieceImg=new Image();                    
+                    this.PieceImg.src = "gourdPie2.png";                    
+                    //console.log("Instance position:" + this.positionX + " " + this.positionY + "rot" + this.rotationAngle);
+            };
+            
+            MelonPiece.prototype.updatePosition = function(k, time_delta){
+                //console.log("Updated position:" + this.positionX + " " + this.positionY);
+                if (this.positionY < (boxHeight-23))
+                {
+                    this.velocityY += k*time_delta;
+                    this.positionY -= this.velocityY ;
+                    this.positionX -= this.velocityX ;
+                    this.rotationAngle += (this.velocityX/45) * Math.PI;
+                    //console.log("Updated velocity:" + " vX" + this.velocityX + " vY" + this.velocityY);        
+                    //console.log("Updated position:" + k + " " + time_delta + " X " + this.positionX + " Y " + this.positionY);
+                    
+                }
+            };
+            
+             MelonPiece.prototype.draw = function(context){
+                //console.log("Draw position:" + this.positionX + " " + this.positionY);
+                var sizeI = 16;
+                //sizeI = sizeI.toInt;
                 context.save();
-                    context.lineWidth = 1;
-                    context.strokeStyle = 'rgba(0,0,0,'+shade+')';                    
-                    context.translate(this.positionX, this.positionY);
-                    context.beginPath();
-                    context.arc(0, 0, this.ballSize, 0, Math.PI*2,false); 
-                    context.closePath();
-                    context.fill();
-                    context.stroke();
+                    context.translate(this.positionX+8, this.positionY+8);
+                    context.rotate(this.rotationAngle);
+                    context.drawImage(this.PieceImg, -8,-8, sizeI, sizeI);               
                 context.restore();
-            };                   
+            };
             
             var DestructionRig = function(topX, topY, cLength, cHeight, x, y, cIntTop, cIntRight, cLow, cabWS){ 
-                    this.RigImg=new Image();
-                    this.RigImg.src = "crane.png";
+                    //this.RigImg=new Image();
+                    //this.RigImg.src = "crane.png";
                   this.craneTopX = topX;  //top of crane
                   this.craneTopY = topY;  //top of crane
                   this.cabLength = cLength;
@@ -71,7 +141,7 @@
             DestructionRig.prototype.draw = function(context, shade){    
                 
                 
-                    context.drawImage(this.RigImg,5,95, 300, 350);
+                    //context.drawImage(this.RigImg,5,95, 300, 350);
                 
                 //context.drawImage(this.RigImg,this.cabX,this.craneTopY, 300, 300);
                 /*context.save();
@@ -104,10 +174,14 @@
                 context.restore();                
             };
             
-            function traceArcPath (rig, context, shade, tics) {
+            function traceArcPath (rig, context, shade, tics, noRampFlag) {
+                var arcArray = ["", "A", "B", "C", "D", "E"];
                 var arcPercent = (tics/ticNumber)/2;
                 var arcPathStart = Math.PI*0.5+(arcPercent*Math.PI);
                 var arcPathFinish = arcPathStart - Math.PI*arcPercent;
+                
+                if(noRampFlag)
+                {
                 context.save();
                     context.lineWidth = 2;                    
                     context.strokeStyle = 'rgba(0,0,0,'+shade+')';
@@ -116,27 +190,49 @@
                         context.arc(rig.craneTopX, rig.craneTopY, radiusOfLine, arcPathStart, arcPathFinish, true);                                                                 
                     context.stroke();                    
                 context.restore();     
-                //create tic marks
+                }
+                else
+                {
+                    context.save();
+                        context.lineWidth = 24;                    
+                        context.strokeStyle = 'rgba(50,50,50,'+shade+')';
+                        arcPathStart = Math.PI;
+                        arcPathFinish = Math.PI*.25;
+                        context.beginPath();                        
+                            context.arc(rig.craneTopX, rig.craneTopY, radiusOfLine+35, arcPathStart, arcPathFinish, true);                                                                 
+                        context.stroke();                    
+                        context.beginPath();                        
+                            context.moveTo(rig.craneTopX-radiusOfLine-35, rig.craneTopY);
+                            context.lineTo(rig.craneTopX-radiusOfLine-35, rig.craneTopY-30);    
+                            context.moveTo(rig.craneTopX-9+(radiusOfLine+35)*Math.sin(arcPathFinish), rig.craneTopY+4+(radiusOfLine+35)*Math.cos(arcPathFinish));
+                            context.lineTo(rig.craneTopX-9+(radiusOfLine+35)*Math.sin(arcPathFinish)+90, rig.craneTopY+4+(radiusOfLine+35)*Math.cos(arcPathFinish));    
+                        context.stroke();                    
+                    context.restore();   
+                }
                 
+                //create tic marks
                 var numDegrees = Math.PI/(ticNumber*2);
                 var ticWidth = 4;
                 var ticLength = ball.ballSize-6;                                              
                 for (i=0; i<ticNumber+1; i++)
                 {
-                    context.save();
-                        context.lineWidth = ticWidth;                    
-                        context.strokeStyle = 'rgba(0,0,0,1)';
-                        context.translate(rig.craneTopX, rig.craneTopY);
-                        context.rotate(numDegrees*i);
-                        context.beginPath();
-                            context.moveTo(0, radiusOfLine-ticLength/2);
-                            context.lineTo(0, radiusOfLine+ticLength/2);                        
-                        context.stroke();                                             
-                        context.rotate(1/360*(Math.PI*2));
-                        context.font = '12pt Calibri';
-                        context.fillStyle = 'black';
-                        context.fillText(i, 0, radiusOfLine+ticLength+15);
-                    context.restore();
+                    if (arcArray[i]!=="")
+                    {
+                        context.save();
+                            context.lineWidth = ticWidth;                    
+                            context.strokeStyle = 'rgba(0,0,0,1)';
+                            context.translate(rig.craneTopX, rig.craneTopY);
+                            context.rotate(numDegrees*i);
+                            context.beginPath();
+                                context.moveTo(0, radiusOfLine-ticLength/2);
+                                context.lineTo(0, radiusOfLine+ticLength/2);                        
+                            context.stroke();                                             
+                            context.rotate(1/360*(Math.PI*2));
+                            context.font = '12pt Calibri';
+                            context.fillStyle = 'black';
+                            context.fillText(arcArray[i], 0, radiusOfLine+ticLength+20);
+                        context.restore();
+                    }
                 };
             };
             
@@ -145,7 +241,7 @@
                 context.lineWidth = 10;
                 context.strokeRect(5,5,boxWidth-5,boxHeight-5);
               context.restore();
-              rig.draw(context, 1);                
+              ball.draw(context, 1);                
             };
  
             function writeMessage(context, message) {                
@@ -160,7 +256,7 @@
             
             function drawBuildings(context, destructionLevel)
             {
-                context.save()
+                context.save();
                     context.fillStyle = "rgba(132,31,39,1)"; 
                     context.globalCompositeOperation = "source-over";
                     //context.globalCompositeOperation = "destination-out";
@@ -219,8 +315,12 @@
             
             function drawScene(rig, ball, prev, angle, rPend, rBall, blur)
             {
-                //context.fillStyle = "rgba(255,255,255,"+blur+")"; //defines fade out for motion blur
-                context.fillStyle = "rgba(255,255,255,1)"; //defines fade out for motion blur
+                context.save();  
+                    context.lineWidth = 10;
+                    context.strokeRect(5,5,boxWidth-5,boxHeight-5);
+                context.restore();
+                context.fillStyle = "rgba(255,255,255,"+blur+")"; //defines fade out for motion blur
+                //context.fillStyle = "rgba(255,255,255,1)"; //defines fade out for motion blur
                 context.globalCompositeOperation = "destination-out";
                 context.fillRect(10, 75, boxWidth-15, boxHeight-80);
                 if(wreckageFlag===1)
@@ -228,24 +328,27 @@
                 context.fillStyle = "black";
                 context.strokeStyle = "rgba(0,0,0,"+Math.max(0,1-Math.abs(prev-angle)*10)+")";
                 context.globalCompositeOperation = "source-over";
-                rig.draw(context, 1);   //draw the rig
-                traceArcPath(rig, context, .50, tics); //drawtheAc                
+                //rig.draw(context, 1);   //draw the rig
+                traceArcPath(rig, context, .50, tics, wreckageFlag); //drawtheArc
+               
                 context.save();
                   context.translate(rig.craneTopX, rig.craneTopY);
                   context.rotate(angle);
-                  connectRigBall (rig, ball, .80);   
-                  context.beginPath();
-                  context.arc(0, rPend, rBall, 0, Math.PI*2, false);
-                  context.fill();
-                  context.stroke();                                    
+                  if(wreckageFlag===1)
+                    connectRigBall (rig, ball, .80);   
+                  ball.draw(context, rPend, rBall, wreckageFlag);
                 context.restore();
+                
+                for (i = 0; i < melonPieces.length; i++)
+                    melonPieces[i].draw(context);
+                    
                 
             };
             
             function reportVelocity (velocity, maxVelocity, tics){                
                 message1 = "          Speed:  "+ Math.abs(velocity).toFixed(2);                
                 message2 = " Max Speed:  "+ maxVelocity.toFixed(2);
-                context.save()
+                context.save();
                     context.clearRect(100, 25, 380, 50);                
                     context.strokeRect(100, 25, 380, 50);       
                     context.font = '12pt Calibri';
@@ -328,7 +431,7 @@
                     context.moveTo(100, graphHeight+50);
                     for(i=0; i<linesH+1; i++)
                     {                           
-                        if (numberArray[i]!=null)
+                        if (numberArray[i]!==null)
                         {
                             xCoord[i] = 100+incrementV*(i+1);
                             yCoord[i] = graphHeight+50-incrementH*(linesH/maxValue)*numberArray[i];                        
@@ -341,7 +444,7 @@
                     context.textAlign = 'center';                        
                     for(i=0; i<linesH+1; i++)
                     {   
-                        if(numberArray[i]!=null)
+                        if(numberArray[i]!==null)
                         {                            
                             context.fillStyle = 'orange';                                
                             context.beginPath();
@@ -379,17 +482,38 @@
                         var id = window.setTimeout(function() { callback(currTime + timeToCall); },
                           timeToCall);
                         lastTime = currTime + timeToCall;
-                        return id;
-                    };
+                        return id; 
 
                 if (!window.cancelAnimationFrame)
                     window.cancelAnimationFrame = function(id) {
                         clearTimeout(id);
                     };
-            }());
+            }()});
             
-            
-            
+            function createMelonPieces (forceSize, vx)
+            {
+                if (forceSize > 1)
+                { 
+                    for (i=0; i<forceSize; i=i+.75)
+                    {
+                  
+                        var vy = Math.random()*4*vx;
+                        var vxSign = Math.random();
+                        if (vxSign > .50)
+                            vx = -vx;
+                        
+                        var randSize = Math.random() +.25;
+                        var randRotation = (Math.random() * 2 * Math.PI) - Math.PI;
+                        //console.log("R" + randRotation);
+                        var mp1 = new MelonPiece(ball.positionX, ball.positionY, vx, vy, randSize, randRotation);
+                        var mp2 = new MelonPiece(ball.positionX, ball.positionY, vx, -vy, randSize, -randRotation);
+                        melonPieces.push(mp1);
+                        melonPieces.push(mp2);
+                        
+                    }
+                }
+            }
+             
             function drawPendulum(dFlag, k, time_now)
             {
                     if (time_now)
@@ -405,6 +529,7 @@
                     var time_delta = (time_now - time_prev)/1200;                    
                     var acceleration = k * Math.sin(angle);                    
                     velocity += acceleration * time_delta;                     
+                    
                     var drag = dragFactor * velocity * velocity;                    
                     if (dFlag){                        
                         if (velocity>0)
@@ -412,21 +537,31 @@
                         else
                             velocity += drag;
                         };
-                    angle    += velocity     * time_delta;                      
+                    angle    += velocity     * time_delta; 
+                    
+                    
+                    if (melonPieces.length>0)
+                    {
+                        for (i=0; i<melonPieces.length; i++)
+                        {   
+                            melonPieces[i].updatePosition(k, time_delta);
+                        }
+                    }
+                        
                                   
-                    drawScene(rig, ball, prev, angle, radiusOfLine, ball.ballSize, .85); 
+                    drawScene(rig, ball, prev, angle, radiusOfLine, ball.ballSize, .44); 
                     var fudgeV = .006*tics*tics;
                     if((Math.abs(velocity)+fudgeV)>maxVelocity)
                         maxVelocity=Math.abs(velocity)+fudgeV;                
                     reportVelocity(velocity, maxVelocity, tics);
                     prev = angle;   
-                    console.log("WreckFlag:"+wreckageFlag);
+                    //console.log("WreckFlag:"+wreckageFlag);
                     
                     var forceCell = tics+"f";      
                     
                     if(wreckageFlag===1)
                     {
-                        console.log(" Angle:"+angle);
+                        //console.log(" Angle:"+angle);
                         if (angle>0)
                             simPendulum = requestAnimationFrame(function () {                    
                                  drawPendulum(dFlag, k, time_now);                              
@@ -440,8 +575,13 @@
                                 maxForceBall = forceBall;                                
                                 document.getElementById(forceCell).textContent=maxForceBall.toFixed(2);                                
                             };
+                            shatterFlag = true;
+                            
+                                
                             velocity = velocity*-0.45;
-                            angle=0.0001;
+                            if (melonPieces.length===0)
+                                createMelonPieces(maxForceBall, velocity);
+                            angle=0.001;
                             simPendulum = requestAnimationFrame(function () {                    
                                  drawPendulum(dFlag, k, time_now);                              
                              });
@@ -464,17 +604,23 @@
             };
 
             //******************INITIALIZING****************//
-            var rig = new DestructionRig(300, 100, 100, 80, 50, 100, 65, 25, 45, 40);
-            var ball = new DestructionBall(20, 5, 300, 350, 0, 0);            
+            var rig = new DestructionRig(310, 145, 100, 80, 50, 100, 65, 25, 45, 40);
+            var ball = new DestructionBall(20, 5, 300, 395, 0, 0);            
             var radiusOfLine = ball.originY - rig.craneTopY;  
             var wreckageFlag=0;
+            var shatterFlag = false;
             var velocityFlag=1;
+            var melonPieces = [];
             
             init();
             tics=document.getElementById('ticPicker').value;            
             angle = (Math.PI/2)*(tics/ticNumber);
             drawScene(rig, ball, prev, angle, radiusOfLine, ball.ballSize, 1);  
             reportVelocity(0,0,0);
+            $("melonBoy2.png").load(function(){
+                 ball.draw(context, 1);   
+             });
+            
 
             var moveFlag = false;
             //start/stop the simulation
@@ -482,9 +628,11 @@
                 if(moveFlag)
                 {
                     //clearInterval(simPendulum);                        
-                    cancelAnimationFrame(simPendulum);                        
+                    cancelAnimationFrame(simPendulum);   
+                    shatterFlag = false;
+                    melonPieces = [];
                     angle = (Math.PI/2)*(tics/ticNumber);
-                    drawScene(rig, ball, prev, angle, radiusOfLine, ball.ballSize, 1);                          
+                    drawScene(rig, ball, prev, angle, radiusOfLine, ball.ballSize, 1);                                                
                     document.getElementById('ticMessage').style.color = 'black';
                     document.getElementById('startStop').textContent="Begin Simulation";
                     document.getElementById('dragCheck').disabled=false;
@@ -533,7 +681,7 @@
             };
             
             //start/stop the simulation
-            startStop.addEventListener('click', function(evt) {            
+            startStop.addEventListener('click', function(evt) {                                  
                 toggleMove();
             }, false);
             
@@ -561,7 +709,7 @@
                 if(wreckageFlag===1)
                     document.getElementById('forceGraph').disabled=false;
                 document.getElementById('scenario3').disabled=false;
-                document.getElementById('scenario4').disabled=false;
+                document.getElementById('scenario4').disabled=false;               
             };
             
             
@@ -580,12 +728,12 @@
                 else
                 {   
                     graphFlag=true;                 
-                    var velocityTableValues = getTableValues("v", 10); //"v" for velocity, "f" for force, "r" for tic 
+                    var velocityTableValues = getTableValues("v", 5); //"v" for velocity, "f" for force, "r" for tic 
                     var maxVelocity = 5; //current Max, change this if v10>5
-                    drawGraphPaper(context, 10, 10, velocityTableValues, maxVelocity, "Maximum Velocity m/s");
+                    drawGraphPaper(context, 5, 5, velocityTableValues, maxVelocity, "Maximum Velocity m/s");
                     document.getElementById('velocityGraph').textContent="return to sim";   
                     disableStuff();
-                    this.disabled=false
+                    this.disabled=false;
                 };
             }, false);
             
@@ -602,12 +750,12 @@
                 else
                 {   
                     graphFlag=true;                 
-                    var forceTableValues = getTableValues("f", 10); //"v" for velocity, "f" for force, "r" for tic 
+                    var forceTableValues = getTableValues("f", 5); //"v" for velocity, "f" for force, "r" for tic 
                     var maxForce = 15; //current Max, change this if v10>5
-                    drawGraphPaper(context, 10, 10, forceTableValues, maxForce, "Maximum Wreckage");
+                    drawGraphPaper(context, 5, 5, forceTableValues, maxForce, "Maximum Wreckage");
                     document.getElementById('forceGraph').textContent="return to sim"; 
                     disableStuff();
-                    this.disabled=false
+                    this.disabled=false;
                 };
             }, false);
             
@@ -665,23 +813,22 @@
             
             });
             
-            
+                       
         </script>
     </head>
      
     <body>
-        <div id="topTitle"><h2>Wrecking Ball Exercise and Simulation</h2></div>
+        <div id="topTitle"><h2>Gourdon Skate</h2></div>
         
         <div id="leftPane">
             <canvas id="myCanvas" width="600" height="475">
                 <!-- Insert fallback content here -->
             </canvas>
             <div id="bottomPane">
-                <button class ="progressButton" id="scenario1" disabled="true">1. Building: Too Little</button>
-                <button class ="progressButton" id="scenario2" disabled="true">2. Building: Too Much</button>
-                <button class ="progressButton" id="scenario3" >3. Simulation: Speed</button>
-                <button class ="progressButton" id="scenario4" >4. Simulation: Wreckage</button>
-                <button class ="progressButton" id="scenario5" disabled="true">5. Building: Just Right</button>
+                
+                <button class ="progressButton" id="scenario3" >1. Skater Speed Check</button>
+                <button class ="progressButton" id="scenario4" >2. Smashing Pumpkins</button>
+                <button class ="progressButton" id="scenario5" disabled="true">3. Helmet Tests </button>
             </div>
         </div>
         
@@ -689,80 +836,55 @@
                     
                 <button id="startStop">Begin Simulation</button>
                 <br>
-                <text id="ticMessage">Choose starting value for wrecking ball</text>
+                <text id="ticMessage">Choose where to start melon</text>
                 <select id="ticPicker" name="ticPicker">                   
-                   <option value=1>1</option>
-                   <option value=2>2</option>
-                   <option value=3>3</option>
-                   <option value=4>4</option>
-                   <option value=5>5</option>
-                   <option value=6>6</option>
-                   <option value=7>7</option>
-                   <option value=8>8</option>
-                   <option value=9>9</option>
-                   <option value=10>10</option>                    
+                   <option value=1>A</option>
+                   <option value=2>B</option>
+                   <option value=3>C</option>
+                   <option value=4>D</option>
+                   <option value=5>E</option>
+                   
                 </select> 
                 <br>
-                <br>                
+                <br>    
+                
                 <input type ="checkbox" id="dragCheck" checked><span id="dragLabel">Drag ON</span>
+                   
                 <br>
                 <br>
                 <table id="ballData" style="width:100%">
                     <tr>
-                        <th>Ball Level</th>
-                        <th>Maximum Speed <button id="velocityGraph" disabled="true">graph</button></th>
-                        <th>Wreckage Amount<button id="forceGraph" disabled="true">graph</button></th>
+                        <th>Melon Level</th>
+                        
+                        <th>Maximum Speed<button id="velocityGraph" disabled="true">graph</button></th> 
+                        <th>Pie Filling<button id="forceGraph" disabled="true">graph</button></th>
+                        
                       </tr>
                     <tr>
-                      <td id="1r">1</td>
+                      <td id="1r">A</td>
                       <td id="1v">--</td>
                       <td id="1f">--</td>
                     </tr>
                     <tr>
-                      <td id="2r">2</td>
+                      <td id="2r">B</td>
                       <td id="2v">--</td>
                       <td id="2f">--</td>
                     </tr>
                     <tr>
-                      <td id="3r">3</td>
+                      <td id="3r">C</td>
                       <td id="3v">--</td>
                       <td id="3f">--</td>
                     </tr>
                     <tr>
-                      <td id="4r">4</td>
+                      <td id="4r">D</td>
                       <td id="4v">--</td>
                       <td id="4f">--</td>
                     </tr>
                     <tr>
-                      <td id="5r">5</td>
+                      <td id="5r">E</td>
                       <td id="5v">--</td>
                       <td id="5f">--</td>
-                    </tr>
-                    <tr>
-                      <td id="6r">6</td>
-                      <td id="6v">--</td>
-                      <td id="6f">--</td>
-                    </tr>
-                    <tr>
-                      <td id="7r">7</td>
-                      <td id="7v">--</td>
-                      <td id="7f">--</td>
-                    </tr>
-                    <tr>
-                      <td id="8r">8</td>
-                      <td id="8v">--</td>
-                      <td id="8f">--</td>
-                    </tr>
-                    <tr>
-                      <td id="9r">9</td>
-                      <td id="9v">--</td>
-                      <td id="9f">--</td>
-                    </tr>
-                    <tr>
-                      <td id="10r">10</td>
-                      <td id="10v">--</td>
-                      <td id="10f">--</td>
-                    </tr>
+                    </tr>                   
                 </table> 
                 <button id="clearTable">Clear Table</button>
                 
