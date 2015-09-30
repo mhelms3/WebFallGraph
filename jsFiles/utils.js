@@ -7,8 +7,26 @@ function writeMessage(context, message) {
                 context.font = '12pt Calibri';
                 context.fillStyle = 'black';
                 context.fillText(message, 100, 50);
-              };
+            };
               
+function init(context, ball, rig, myScreen, myFlags){                                          
+                context.save();  
+                  context.lineWidth = 10;
+                  context.strokeRect(5,5,myScreen.boxWidth-5,myScreen.boxHeight-5);
+                context.restore();
+
+                rig.radiusOfLine = ball.originY - rig.pivotY;  
+                ball.tics=document.getElementById('ticPicker').value;            
+                ball.setTicAngle(rig.maxTicNumber);
+                
+                myScreen.yArcEdge = rig.pivotY+4+(rig.radiusOfLine+35)*Math.cos(Math.PI*.25);
+                myScreen.xArcEdge = rig.pivotX-9+(rig.radiusOfLine+35)*Math.sin(Math.PI*.25);
+                
+                drawScene(context, rig, ball, 1, myScreen, myFlags);
+                reportVelocity(context, 0,0,0);
+                
+            };
+
 function reportVelocity (context, velocity, maxVelocity, tics){                
                 message1 = "          Speed:  "+ Math.abs(velocity).toFixed(2);                
                 message2 = " Max Speed:  "+ maxVelocity.toFixed(2);
@@ -43,3 +61,31 @@ function getTableValues (columnName, columnNumber){
                 };                
                 return valueArray;                
             };
+
+function disableStuff()
+            {                                  
+                document.getElementById('startStop').disabled=true;
+                document.getElementById('ticMessage').style.color = 'gray';                   
+                //document.getElementById('dragCheck').disabled=true;                    
+                $( "#ticPicker").attr('disabled', 'disabled');                                        
+                document.getElementById('clearTable').disabled=true;
+                document.getElementById('velocityGraph').disabled=true;
+                document.getElementById('forceGraph').disabled=true;
+                document.getElementById('scenario1').disabled=true;
+                document.getElementById('scenario2').disabled=true;
+            };
+            
+function enableStuff(wreckageFlag)
+            {                
+                document.getElementById('startStop').disabled=false;
+                document.getElementById('ticMessage').style.color = 'black';                   
+                //document.getElementById('dragCheck').disabled=false;                    
+                $( "#ticPicker").removeAttr('disabled');                                        
+                document.getElementById('clearTable').disabled=false;  
+                document.getElementById('velocityGraph').disabled=false;                
+                if(wreckageFlag)
+                    document.getElementById('forceGraph').disabled=false;
+                document.getElementById('scenario1').disabled=false;
+                document.getElementById('scenario2').disabled=false;               
+            };
+

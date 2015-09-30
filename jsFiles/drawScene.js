@@ -2,35 +2,56 @@
  * Copyright CEISMC, 2015
  */
 
-function drawScene(context, rig, ball, prev, angle, rPend, rBall, blur, boxWidth, boxHeight, wreckageFlag, radiusOfLine, shatterFlag, ticNumber, melonPieces, tics)
+function drawScene(context, rig, ball, blur, screen, myFlags)
             {
                 context.save();  
                     context.lineWidth = 10;
-                    context.strokeRect(5,5,boxWidth-5,boxHeight-5);
+                    context.strokeRect(5,5,screen.boxWidth-5,screen.boxHeight-5);
                 context.restore();
+                
                 context.fillStyle = "rgba(255,255,255,"+blur+")"; //defines fade out for motion blur
-                //context.fillStyle = "rgba(255,255,255,1)"; //defines fade out for motion blur
                 context.globalCompositeOperation = "destination-out";
-                context.fillRect(10, 75, boxWidth-15, boxHeight-80);
-                if(wreckageFlag===1)
+                context.fillRect(10, 10, screen.boxWidth-15, screen.boxHeight-15);
+                
+                
+                
+                if(myFlags.wreckageFlag)
                     drawWall(context);
+                
                 context.fillStyle = "black";
-                context.strokeStyle = "rgba(0,0,0,"+Math.max(0,1-Math.abs(prev-angle)*10)+")";
                 context.globalCompositeOperation = "source-over";
-                //rig.draw(context, 1);   //draw the rig
-                traceArcPath(rig, context, .50, tics, wreckageFlag, ticNumber, radiusOfLine, ball.ballSize); //drawtheArc
-               
+                
+                traceArcPath(context, ball, rig, .50, myFlags.wreckageFlag, screen); //drawtheArc
+                
                 context.save();
-                  context.translate(rig.craneTopX, rig.craneTopY);
-                  context.rotate(angle);
-                  if(wreckageFlag===1)
-                    connectRigBall (context, rig, ball, .80, radiusOfLine);   
-                  ball.draw(context, rPend, rBall, wreckageFlag, shatterFlag);
+                    context.fillStyle = "rgba(255,255,0,1)"; 
+                    context.translate(screen.xArcEdge, screen.yArcEdge);
+                    context.fillRect(-1,-1,3,3);
                 context.restore();
+             
+                if (myFlags.arcFlag)
+                {
+                    context.save();
+                      context.translate(rig.pivotX, rig.pivotY);
+                      context.rotate(ball.angle);
+
+                      if(myFlags.wreckageFlag)
+                          rig.connectToMover(context, .80)
+
+                      ball.draw(context, rig.radiusOfLine, myFlags);
+                    context.restore();
+                }
+                else
+                {
+                    //console.log("Angle:" + ball.angle+" X.ball:" + ball.positionX + " Y.ball:"+ball.positionY);  
+                    context.save();
+                        context.translate(ball.positionX, ball.positionY);
+                        context.rotate(ball.angle);
+                        ball.draw(context, rig.radiusOfLine, myFlags);
+                    context.restore();
+                }
                 
-                for (i = 0; i < melonPieces.length; i++)
-                    melonPieces[i].draw(context);
-                    
-                
+                for (i = 0; i < ball.pieces.length; i++)
+                    ball.pieces[i].draw(context);
             };
             

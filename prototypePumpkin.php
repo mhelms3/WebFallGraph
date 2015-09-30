@@ -15,27 +15,33 @@
          
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
         <script src="jsFiles/main.js"></script>
-        <script src="jsFiles/skater.js"></script>
+        <script src="jsFiles/moveObject.js"></script>
         <script src="jsFiles/arcPath.js"></script>
         <script src="jsFiles/drawWall.js"></script>
         <script src="jsFiles/rig.js"></script>
         <script src="jsFiles/drawGraphPaper.js"></script>
         <script src="jsFiles/utils.js"></script>
         <script src="jsFiles/drawScene.js"></script>
+        <script src="jsFiles/simpleObjects.js"></script>
+        <script src="jsFiles/animateObjects.js"></script>
+        <script src="jsFiles/buttonBehaviors.js"></script>
+        
+        
+      
     </head>
      
     <body>
         <div id="topTitle"><h2>The Flying Pumpkin</h2></div>
         
         <div id="leftPane">
-            <canvas id="myCanvas" width="600" height="475">
+            <canvas id="myCanvas" width="700" height="475">
                 <!-- Insert fallback content here -->
             </canvas>
             <div id="bottomPane">
                 
-                <button class ="progressButton" id="scenario3" >1. Skater Speed Check</button>
-                <button class ="progressButton" id="scenario4" >2. Smashing Pumpkins</button>
-                <button class ="progressButton" id="scenario5" disabled="true">3. Helmet Tests </button>
+                <button class ="progressButton" id="scenario1" >1. Skater Speed Check</button>
+                <button class ="progressButton" id="scenario2" >2. Smashing Pumpkins</button>
+                <button class ="progressButton" id="scenario3" disabled="true">3. Helmet Tests </button>
             </div>
         </div>
         
@@ -43,7 +49,7 @@
                     
                 <button id="startStop">Begin Simulation</button>
                 <br>
-                <text id="ticMessage">Choose where to start melon</text>
+                <text id="ticMessage">Choose where to start the flying pumpkin</text>
                 <select id="ticPicker" name="ticPicker">                   
                    <option value=1>A</option>
                    <option value=2>B</option>
@@ -55,7 +61,9 @@
                 <br>
                 <br>    
                 
-                <input type ="checkbox" id="dragCheck" checked><span id="dragLabel">Drag ON</span>
+                <!-- DRAG IS DISABLED
+                <input type ="checkbox" id="dragCheck" checked><span id="dragLabel">Drag ON</span> 
+                -->
                    
                 <br>
                 <br>
@@ -99,3 +107,4 @@
         </div>
     </body>
 </html>
+
