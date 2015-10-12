@@ -29,6 +29,10 @@ function drawScene(context, rig, ball, blur, screen, myFlags)
                     context.fillRect(-1,-1,3,3);
                 context.restore();
              
+                //if(!myFlags.wreckageFlag)
+                    //
+
+             
                 if (myFlags.arcFlag)
                 {
                     context.save();
@@ -49,7 +53,11 @@ function drawScene(context, rig, ball, blur, screen, myFlags)
                         context.rotate(ball.angle);
                         ball.draw(context, rig.radiusOfLine, myFlags);
                     context.restore();
+                    //skaterExpression(context, "Cowabunga Little Dudes", ball);
                 }
+                
+                if(ball.message !== "")
+                        skaterExpression(context, ball);
                 
                 for (i = 0; i < ball.pieces.length; i++)
                     ball.pieces[i].draw(context);

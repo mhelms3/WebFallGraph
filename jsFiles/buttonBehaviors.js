@@ -2,11 +2,11 @@
  * Copyright CEISMC, 2015
  */
 
-function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics)
+function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics, mySayings)
 {
     
                   startStop.addEventListener('click', function(evt) {                                  
-                        toggleMove(context, rig, ball, myScreen, myFlags, myTimer, myPhysics);
+                        toggleMove(context, rig, ball, myScreen, myFlags, myTimer, myPhysics, mySayings);
                     }, false);
                     
                     

@@ -8,8 +8,20 @@ function writeMessage(context, message) {
                 context.fillStyle = 'black';
                 context.fillText(message, 100, 50);
             };
+            
+function skaterExpression (context, ball)
+{       
+    var textOffset = 125;
+    context.save();
+            //context.rotate(-ball.angle);        
+            context.translate(textOffset+250, textOffset);
+            context.font = '12pt Calibri';
+            context.fillStyle = 'black';
+            context.fillText(ball.message, 0, 0);
+   context.restore();
+};
               
-function init(context, ball, rig, myScreen, myFlags){                                          
+function init(context, ball, rig, myScreen, myFlags, mySayings){                                          
                 context.save();  
                   context.lineWidth = 10;
                   context.strokeRect(5,5,myScreen.boxWidth-5,myScreen.boxHeight-5);
@@ -22,6 +34,8 @@ function init(context, ball, rig, myScreen, myFlags){
                 myScreen.yArcEdge = rig.pivotY+4+(rig.radiusOfLine+35)*Math.cos(Math.PI*.25);
                 myScreen.xArcEdge = rig.pivotX-9+(rig.radiusOfLine+35)*Math.sin(Math.PI*.25);
                 
+                mySayings.initializeSayings();
+
                 drawScene(context, rig, ball, 1, myScreen, myFlags);
                 reportVelocity(context, 0,0,0);
                 

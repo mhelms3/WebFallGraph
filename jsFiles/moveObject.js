@@ -36,6 +36,7 @@ var moveObject = function(bs, bm, x, y, vx, vy){
                     this.previousAngle = 0;
                     this.tics = 0;
                     this.pieces = [];
+                    this.message = "";
                  };
                  
             moveObject.prototype.reset = function(){                
@@ -49,6 +50,7 @@ var moveObject = function(bs, bm, x, y, vx, vy){
                 this.previousAngle = 0;
                 this.positionX = this.originX;
                 this.positionY = this.originY;
+                this.message = "";
             };
             
             moveObject.prototype.draw = function(context, rPend, myFlags){                
@@ -79,7 +81,7 @@ var moveObject = function(bs, bm, x, y, vx, vy){
                             if(this.angle<-.95)
                                 context.drawImage(this.SkaterImgFullCrouch, -rBall*3+20,-rBall*5+3, rBall*4, rBall*6);
                             else if(this.angle<-.45)
-                                context.drawImage(this.SkaterImgHalfCrouch, -rBall*3+20,-rBall*5+3, rBall*4, rBall*6);
+                                context.drawImage(this.SkaterImgFullCrouch, -rBall*3+20,-rBall*5+3, rBall*4, rBall*6);
                             else
                                 context.drawImage(this.SkaterImg, -rBall*3+20,-rBall*5+3, rBall*4, rBall*6);
                         }
@@ -91,6 +93,7 @@ var moveObject = function(bs, bm, x, y, vx, vy){
                                 context.drawImage(this.SkaterImg,-rBall*3+20,-rBall*5+rPend+3, rBall*4, rBall*6);
                         }
                     }
+  
             };       
             
             
@@ -129,7 +132,26 @@ var moveObject = function(bs, bm, x, y, vx, vy){
                     };
             };
             
-            moveObject.prototype.checkArc = function(rig, myFlags, myScreen)
+            moveObject.prototype.getMessage = function(mySayings)
+            {
+                var tempSayings;
+                if(this.positionY > 360) 
+                    tempSayings = mySayings.lameSayings;
+                else if(this.positionY > 300) 
+                    tempSayings = mySayings.goodSayings;
+                else if(this.positionY > 200) 
+                    tempSayings = mySayings.awesomeSayings;
+                else
+                    tempSayings = mySayings.dizzySayings;
+                
+                var sayIndex = Math.floor(Math.random() * tempSayings.length);
+                this.message = tempSayings[sayIndex];
+                
+                //console.log("Y:"+ this.positionY+" Message:"+this.message);
+                
+            };
+            
+            moveObject.prototype.checkArc = function(rig, myFlags, myScreen, mySayings)
             {
                 /*var xEdge = rig.pivotX-9+(rig.radiusOfLine+35)*Math.sin(Math.PI*.25);
                 var yEdge = rig.pivotY+4+(rig.radiusOfLine+35)*Math.cos(Math.PI*.25);
@@ -139,7 +161,12 @@ var moveObject = function(bs, bm, x, y, vx, vy){
                 if (this.velocityY>0 && this.positionX>rig.pivotX && this.positionY<yEdge)
                 {
                     this.velocityX = .5;
+                    this.getMessage(mySayings);
                     myFlags.arcFlag = false;
+                }
+                else if(this.velocity>0 && this.message == "")
+                {
+                    this.getMessage(mySayings);
                 }
                     
             };
@@ -155,19 +182,19 @@ var moveObject = function(bs, bm, x, y, vx, vy){
                 if (this.angle<-1.4 && this.angle > -2*Math.PI)
                     this.angle -= .1;
                 else if(this.angle <0)
-                    this.angle += .06;
+                    this.angle += .033;
                 
                 //fall if not on the platform
                 if(this.positionY<yEdge)
                 {
-                    this.velocityY += myPhysics.gravity * myTimer.timeDelta;
+                    this.velocityY += .3 * myPhysics.gravity * myTimer.timeDelta;
                     this.positionY += this.velocityY;
                 }
                 else
                 {   
                     //break hard on ledge, otherwise, no change in x-velocity
                     if(this.velocityX>0)
-                        this.velocityX += 3 * -myPhysics.gravity * myTimer.timeDelta;
+                        this.velocityX +=  -myPhysics.gravity * myTimer.timeDelta;
                     else
                         this.velocityX =0;
                     

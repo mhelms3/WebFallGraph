@@ -3,12 +3,12 @@
  */
 
 
-function drawPendulum(myScreen, myFlags, myPhysics, myTimer, ball, rig, context)
+function drawPendulum(mySayings, myScreen, myFlags, myPhysics, myTimer, ball, rig, context)
 {
         myTimer.update();
         
         if(!myFlags.wreckageFlag && myFlags.arcFlag)
-            ball.checkArc(rig, myFlags, myScreen);
+            ball.checkArc(rig, myFlags, myScreen, mySayings);
         
         if(myFlags.arcFlag)
         {
@@ -24,7 +24,7 @@ function drawPendulum(myScreen, myFlags, myPhysics, myTimer, ball, rig, context)
         
         
         //THIS IS THE ONLY PLACE THE VALUE FOR BLUR SHOULD BE LESS THAN 1              
-        drawScene(context, rig, ball, .55, myScreen, myFlags);
+        drawScene(context, rig, ball, 1, myScreen, myFlags);
 
         var fudgeV = .006*ball.tics*ball.tics;
 
@@ -53,20 +53,20 @@ function drawPendulum(myScreen, myFlags, myPhysics, myTimer, ball, rig, context)
         }
 
         simPendulum = requestAnimationFrame(function () {                    
-             drawPendulum(myScreen, myFlags, myPhysics, myTimer, ball, rig, context);                              
+             drawPendulum(mySayings, myScreen, myFlags, myPhysics, myTimer, ball, rig, context);                              
         });
 };
             
             //invokes drawPendulum
-function pendulumSim(myScreen, myFlags, myPhysics, myTimer, ball, rig, context) 
+function pendulumSim(mySayings, myScreen, myFlags, myPhysics, myTimer, ball, rig, context) 
 {      
     ball.maxVelocity =0;       
     ball.maxForceBall =0;
     myTimer.timeNow = new Date().getTime();                 
-    drawPendulum(myScreen, myFlags, myPhysics, myTimer, ball, rig, context);        
+    drawPendulum(mySayings, myScreen, myFlags, myPhysics, myTimer, ball, rig, context);        
 };
 
-function toggleMove(context, rig, ball, myScreen, myFlags, myTimer, myPhysics)
+function toggleMove(context, rig, ball, myScreen, myFlags, myTimer, myPhysics, mySayings)
 {
     if(myFlags.moveFlag)
     {
@@ -96,7 +96,7 @@ function toggleMove(context, rig, ball, myScreen, myFlags, myTimer, myPhysics)
         //document.getElementById('dragCheck').disabled=true;                    
         $("#ticPicker").attr('disabled', 'disabled');
         ball.velocity=0;                       
-        pendulumSim(myScreen, myFlags, myPhysics, myTimer, ball, rig, context);
+        pendulumSim(mySayings, myScreen, myFlags, myPhysics, myTimer, ball, rig, context);
         document.getElementById('velocityGraph').disabled=true;                     
         document.getElementById('forceGraph').disabled=true; 
         document.getElementById('clearTable').disabled=true; 
