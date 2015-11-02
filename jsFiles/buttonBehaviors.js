@@ -16,6 +16,43 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                     ball.setTicAngle(rig.maxTicNumber);
                     drawScene(context, rig, ball, 1, myScreen, myFlags);
                 }, false);
+                
+                function clearColumn(column, rows)
+                {
+                    for(i=1; i<rows+1; i++)
+                    {
+                        var clearCell = i+column;                    
+                        document.getElementById(clearCell).textContent="--" ;
+                    }
+                };
+                
+                helmetPicker.addEventListener('change', function(evt) {    
+                    var forceFlag = false;
+                    for(i=1; i<6; i++)
+                    {
+                        var forceCell = i+"h";   
+                        if (document.getElementById(forceCell).textContent!="--")
+                            forceFlag = true;
+                    }
+                    
+                    if (forceFlag)
+                    {
+                        var confirmation = confirm("You will lose all helmet data when switching helmets. Proceed?");
+                        if (confirmation)
+                        {
+                            clearColumn("h", 5);
+                            ball.helmet=document.getElementById('helmetPicker').value;            
+                            drawScene(context, rig, ball, 1, myScreen, myFlags);
+                        }
+                        else
+                            document.getElementById('helmetPicker').selectedIndex = ball.helmet-1;
+                        
+                    }
+                    
+                    
+                    //ball.helmet=document.getElementById('helmetPicker').value;            
+                    //drawScene(context, rig, ball, 1, myScreen, myFlags);
+                }, false);
 
                 //DRAG IS DISABLED
                 /*
@@ -36,28 +73,49 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                 //clear data table
                 clearTable.addEventListener('click', function(evt) {            
                     document.getElementById('velocityGraph').disabled=true;         
-                    for(i=1; i<11; i++)
-                    {
-                        var velocityCell = i+"v";                    
-                        var forceCell = i+"f";   
-                        document.getElementById(velocityCell).textContent="--" ;
-                        document.getElementById(forceCell).textContent="--" ;
-                    }
+                    document.getElementById('forceGraph').disabled=true;
+                    clearColumn("v", 5);
+                    clearColumn("f", 5);
+                    clearColumn("h", 5);
                 }, false);
 
                 //velocity Sim
                 scenario1.addEventListener('click', function(evt) {
                     myFlags.wreckageFlag=false;
+                    myFlags.helmetFlag = false;
                     ball.tics=document.getElementById('ticPicker').value;            
                     ball.setTicAngle(rig.maxTicNumber);
+                    ball.helmet = 0;
                     drawScene(context, rig, ball, 1, myScreen, myFlags);
+                    document.getElementById('helmetMessage').style.visibility = "hidden";      
+                    document.getElementById('helmetPicker').style.visibility = "hidden";
+                    document.getElementById('helmetPicker').disabled=true;
                 }, false);
 
                 //wreckage Sim
                 scenario2.addEventListener('click', function(evt) {
                     myFlags.wreckageFlag=true;
+                    myFlags.helmetFlag = false;
                     ball.tics=document.getElementById('ticPicker').value;                            
                     ball.setTicAngle(rig.maxTicNumber);
+                    ball.helmet = 0;
+                    drawScene(context, rig, ball, 1, myScreen, myFlags);
+                    document.getElementById('helmetMessage').style.visibility = "hidden";      
+                    document.getElementById('helmetPicker').style.visibility = "hidden";
+                    document.getElementById('helmetPicker').disabled=true;
+                }, false);
+                
+                //helmet Sim
+                scenario3.addEventListener('click', function(evt) {
+                    myFlags.wreckageFlag=true;
+                    myFlags.helmetFlag = true;
+                    ball.tics=document.getElementById('ticPicker').value;                            
+                    ball.setTicAngle(rig.maxTicNumber);
+                    ball.helmet = document.getElementById('helmetPicker').value;
+                    document.getElementById('helmetMessage').style.visibility = "visible";
+                    document.getElementById('helmetPicker').style.visibility = "visible";
+                    document.getElementById('helmetPicker').disabled=false;      
+                    
                     drawScene(context, rig, ball, 1, myScreen, myFlags);
                 }, false);
 

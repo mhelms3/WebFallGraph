@@ -35,11 +35,21 @@ function drawPendulum(mySayings, myScreen, myFlags, myPhysics, myTimer, ball, ri
         //console.log("WreckFlag:"+wreckageFlag);
 
         var forceCell = ball.tics+"f";      
+        
 
         if(myFlags.wreckageFlag && ball.angle<0)
         {
                 fudgeF = Math.abs(ball.velocity) + fudgeV +.04*ball.tics;
                 forceBall = (fudgeF*fudgeF*ball.ballMass)/10;
+                
+                if (ball.helmet >0)
+                {
+                    forceBall -= ball.helmet*2;
+                    if (forceBall < 0)
+                        forceBall = 0.001;
+                    forceCell = ball.tics+"h";
+                }
+                
                 if (forceBall > ball.maxForceBall) 
                 {
                     ball.maxForceBall = forceBall;                                
@@ -76,32 +86,15 @@ function toggleMove(context, rig, ball, myScreen, myFlags, myTimer, myPhysics, m
         myFlags.arcFlag = true;
         ball.setTicAngle(rig.maxTicNumber);
         drawScene(context, rig, ball, 1, myScreen, myFlags);
-        document.getElementById('ticMessage').style.color = 'black';
-        document.getElementById('startStop').textContent="Begin Simulation";
-        //document.getElementById('dragCheck').disabled=false;
-        document.getElementById('clearTable').disabled=false;                     
-        document.getElementById('velocityGraph').disabled=false;
-        if(myFlags.wreckageFlag)
-            document.getElementById('forceGraph').disabled=false;
-        document.getElementById('scenario1').disabled=false;
-        document.getElementById('scenario2').disabled=false;
-        $( "#ticPicker").removeAttr('disabled');
+        enableStuff(myFlags.wreckageFlag);     
         myFlags.moveFlag = false;
     }
     else
     {
         ball.tics = document.getElementById('ticPicker').value;                    
-        document.getElementById('startStop').textContent="End Simulation";
-        document.getElementById('ticMessage').style.color = 'gray';                   
-        //document.getElementById('dragCheck').disabled=true;                    
-        $("#ticPicker").attr('disabled', 'disabled');
         ball.velocity=0;                       
         pendulumSim(mySayings, myScreen, myFlags, myPhysics, myTimer, ball, rig, context);
-        document.getElementById('velocityGraph').disabled=true;                     
-        document.getElementById('forceGraph').disabled=true; 
-        document.getElementById('clearTable').disabled=true; 
-        document.getElementById('scenario1').disabled=true;
-        document.getElementById('scenario2').disabled=true;
+        disableStuff();
         myFlags.moveFlag = true;                    
     }
 };

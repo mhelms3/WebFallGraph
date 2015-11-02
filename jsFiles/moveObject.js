@@ -1,24 +1,9 @@
-var moveObject = function(bs, bm, x, y, vx, vy){
-                    this.MoverImg=new Image();                    
-                    this.MoverImg.src = "gourd.png";
-                    this.MoverImgD1=new Image();                    
-                    this.MoverImgD1.src = "gourdD1.png";
-                    this.MoverImgD2=new Image();                    
-                    this.MoverImgD2.src = "gourdD2.png";
-                    this.MoverImgD3=new Image();                    
-                    this.MoverImgD3.src = "gourdD3.png";
-                    this.MoverImgD4=new Image();                    
-                    this.MoverImgD4.src = "gourdD4.png";
-                    this.MoverImgD5=new Image();                    
-                    this.MoverImgD5.src = "gourdD5.png";
-                    this.SkaterImg=new Image();
-                    this.SkaterImg.src = "gourdon2.png";
-                    this.SkaterImgRev=new Image();
-                    this.SkaterImgRev.src = "gourdon2rev.png";
-                    this.SkaterImgHalfCrouch=new Image();
-                    this.SkaterImgHalfCrouch.src = "gourdon2-1.png";
-                    this.SkaterImgFullCrouch=new Image();
-                    this.SkaterImgFullCrouch.src = "gourdon2-2.png";
+var moveObject = function(bs, bm, x, y, vx, vy)
+{
+                    this.moverImages = [];
+                    this.helmetImages = [];
+                    this.skaterImages = [];
+                    
                     this.ballSize = bs;
                     this.ballMass = bm;
                     this.positionX = x; 
@@ -37,9 +22,27 @@ var moveObject = function(bs, bm, x, y, vx, vy){
                     this.tics = 0;
                     this.pieces = [];
                     this.message = "";
+                    this.helmet = 0;
+                    
+                    this.getImages(6, "gourd", this.moverImages);
+                    this.getImages(4, "helmet", this.helmetImages);
+                    this.getImages(4, "skater", this.skaterImages);
                  };
                  
-            moveObject.prototype.reset = function(){                
+                 
+            moveObject.prototype.getImages = function(numImages, baseName, imageVar )
+            {
+                var fileNameImage;
+                for (i = 0; i<numImages; i++)
+                {
+                    imageVar[i] = new Image();
+                    fileNameImage = "imageFiles/"+ baseName + i.toString() + ".png";
+                    imageVar[i].src = fileNameImage;
+                }
+            };    
+            
+            moveObject.prototype.reset = function()
+            {                
                 this.pieces = [];
                 this.velocity = 0;
                 this.maxVelocity = 0;
@@ -53,56 +56,95 @@ var moveObject = function(bs, bm, x, y, vx, vy){
                 this.message = "";
             };
             
-            moveObject.prototype.draw = function(context, rPend, myFlags){                
+            moveObject.prototype.draw = function(context, rPend, myFlags)
+            {                
                     var rBall = this.ballSize;
+                    var dimX;
+                    var dimY;
+                    var posX;
+                    var posY;
+                    
                     if (myFlags.wreckageFlag)
+                    {
+                        //draw pumpkin
+                        dimX = rBall*2;
+                        dimY = rBall*2;
+                        posX = -rBall;
+                        posY = -rBall+rPend;
                         if(myFlags.shatterFlag)
                             {
                                 if (this.maxForceBall<.5)
-                                    context.drawImage(this.MoverImg,-rBall,-rBall+rPend, rBall*2, rBall*2);                           
+                                    context.drawImage(this.moverImages[0],posX, posY, dimX, dimY);                           
                                 else if(this.maxForceBall<2)
-                                    context.drawImage(this.MoverImgD1,-rBall,-rBall+rPend, rBall*2, rBall*2);
+                                    context.drawImage(this.moverImages[1],posX, posY, dimX, dimY);
                                 else if(this.maxForceBall<4)
-                                    context.drawImage(this.MoverImgD2,-rBall,-rBall+rPend, rBall*2, rBall*2);
+                                    context.drawImage(this.moverImages[2],posX, posY, dimX, dimY);
                                 else if(this.maxForceBall<7)
-                                    context.drawImage(this.MoverImgD3,-rBall,-rBall+rPend, rBall*2, rBall*2);
+                                    context.drawImage(this.moverImages[3],posX, posY, dimX, dimY);
                                 else if(this.maxForceBall<10)
-                                    context.drawImage(this.MoverImgD4,-rBall,-rBall+rPend, rBall*2, rBall*2);
+                                    context.drawImage(this.moverImages[4],posX, posY, dimX, dimY);
                                 else 
-                                    context.drawImage(this.MoverImgD5,-rBall,-rBall+rPend, rBall*2, rBall*2);
+                                    context.drawImage(this.moverImages[5],posX, posY, dimX, dimY);
                             }
                         else
-                            context.drawImage(this.MoverImg,-rBall,-rBall+rPend, rBall*2, rBall*2);
+                            context.drawImage(this.moverImages[0],posX, posY, dimX, dimY);
+                        
+                        //draw helmet
+                        dimX = rBall*2+4;
+                        dimY = rBall*2+4;
+                        posX = -rBall-2;
+                        posY = -rBall+rPend-2;
+                        if(myFlags.helmetFlag)
+                        {
+                            if (this.helmet == 1)
+                                context.drawImage(this.helmetImages[0],posX, posY, dimX, dimY);                          
+                            else if (this.helmet == 2)
+                                context.drawImage(this.helmetImages[1],posX, posY, dimX, dimY);                           
+                            else if (this.helmet == 3)
+                                context.drawImage(this.helmetImages[2],posX, posY, dimX, dimY);  
+                            else if (this.helmet == 4)
+                                context.drawImage(this.helmetImages[3],posX, posY, dimX, dimY);  
+                            else 
+                                context.drawImage(this.helmetImages[0],posX, posY, dimX, dimY);                           
+                        }
+                    }
                     else         
                     {
+                        //draw skater
+                        dimX = rBall*5;
+                        dimY = rBall*6;
+                        
                         if(!myFlags.arcFlag)
                         {
-                            //console.log("Angle:" + this.angle + " X.this:" + this.positionX + " Y.this:"+ this.positionY);
+                            posX = -rBall*3+20;
+                            posY = -rBall*5+3;
                             if(this.angle<-.95)
-                                context.drawImage(this.SkaterImgFullCrouch, -rBall*3+20,-rBall*5+3, rBall*4, rBall*6);
+                                context.drawImage(this.skaterImages[3],posX, posY, dimX, dimY);
                             else if(this.angle<-.45)
-                                context.drawImage(this.SkaterImgFullCrouch, -rBall*3+20,-rBall*5+3, rBall*4, rBall*6);
+                                context.drawImage(this.skaterImages[2], posX, posY, dimX, dimY);
                             else
-                                context.drawImage(this.SkaterImg, -rBall*3+20,-rBall*5+3, rBall*4, rBall*6);
+                                context.drawImage(this.skaterImages[0], posX, posY, dimX, dimY);
                         }
                         else
                         {
+                            posX = -rBall*3+20;
+                            posY = -rBall*5+3+rPend;
                             if(this.velocity>0)
-                                context.drawImage(this.SkaterImgRev,-rBall*3+20,-rBall*5+rPend+3, rBall*4, rBall*6);
+                                context.drawImage(this.skaterImages[1],posX, posY, dimX, dimY);
                             else
-                                context.drawImage(this.SkaterImg,-rBall*3+20,-rBall*5+rPend+3, rBall*4, rBall*6);
+                                context.drawImage(this.skaterImages[0],posX, posY, dimX, dimY);
                         }
                     }
   
             };       
             
-            
-            moveObject.prototype.setTicAngle = function(maxTicNumber) {
+            moveObject.prototype.setTicAngle = function(maxTicNumber) 
+            {
                 this.angle = (Math.PI/2)*(this.tics/maxTicNumber);
             };
             
-            
-            moveObject.prototype.update = function(myTimer, myPhysics, myFlags, myScreen, rig) {
+            moveObject.prototype.update = function(myTimer, myPhysics, myFlags, myScreen, rig) 
+            {
                     this.acceleration = -myPhysics.gravity * Math.sin(this.angle);                    
                     this.velocity += this.acceleration * myTimer.timeDelta;                     
                     /* DRAG IS OFF
@@ -171,9 +213,8 @@ var moveObject = function(bs, bm, x, y, vx, vy){
                     
             };
             
-            moveObject.prototype.updateBallistic = function (context, rig, myTimer, myPhysics, myFlags, myScreen) {
-                
-                
+            moveObject.prototype.updateBallistic = function (context, rig, myTimer, myPhysics, myFlags, myScreen) 
+            {
                 var xEdge = rig.pivotX-9+(rig.radiusOfLine+35)*Math.sin(Math.PI*.25);
                 var yEdge = rig.pivotY+4+(rig.radiusOfLine+35)*Math.cos(Math.PI*.25)-35;
                 
@@ -214,10 +255,11 @@ var moveObject = function(bs, bm, x, y, vx, vy){
                     this.size = size;   
                     this.rotationAngle = rotation;
                     this.PieceImg=new Image();                    
-                    this.PieceImg.src = "gourdPie2.png";                    
+                    this.PieceImg.src = "imageFiles/gourdPie2.png";                    
             };
             
-            MelonPiece.prototype.updatePosition = function(physics, time_delta, maxHeight){
+            MelonPiece.prototype.updatePosition = function(physics, time_delta, maxHeight)
+            {
                 if (this.positionY < (maxHeight-23))
                 {
                     this.velocityY += -physics.gravity*time_delta;
@@ -228,7 +270,8 @@ var moveObject = function(bs, bm, x, y, vx, vy){
                 }
             };
             
-             MelonPiece.prototype.draw = function(context){
+            MelonPiece.prototype.draw = function(context)
+            {
                 var sizeI = 16;
                 context.save();
                     context.translate(this.positionX+8, this.positionY+8);
@@ -237,7 +280,7 @@ var moveObject = function(bs, bm, x, y, vx, vy){
                 context.restore();
             };
             
-             function createMelonPieces (forceSize, vx, ball)
+            function createMelonPieces (forceSize, vx, ball)
             {
                 if (forceSize > 1)
                 { 

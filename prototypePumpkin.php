@@ -41,7 +41,8 @@
                 
                 <button class ="progressButton" id="scenario1" >1. Skater Speed Check</button>
                 <button class ="progressButton" id="scenario2" >2. Smashing Pumpkins</button>
-                <button class ="progressButton" id="scenario3" disabled="true">3. Helmet Tests </button>
+                <button class ="progressButton" id="scenario3" >3. Helmet Tests </button>
+                <button class ="progressButton" id="scenario4" >4. New Skate Parks </button>
             </div>
         </div>
         
@@ -59,46 +60,69 @@
                    
                 </select> 
                 <br>
+                <br>
+                
+                <text id="helmetMessage" visibility="hidden">Choose which helmet to use</text>
+                <select id="helmetPicker" visibility="hidden" name="helmetPicker">                   
+                   <option value=1>Black Helmet</option>
+                   <option value=2>Green Helmet</option>
+                   <option value=3>Eagle Helmet</option>
+                   <option value=4>Pink Helmet</option>
+                </select> 
+                
+                <br>
                 <br>    
                 
                 <!-- DRAG IS DISABLED
                 <input type ="checkbox" id="dragCheck" checked><span id="dragLabel">Drag ON</span> 
-                -->
+                 -->
                    
                 <br>
                 <br>
                 <table id="ballData" style="width:100%">
                     <tr>
                         <th>Pumpkin Level</th>
-                        
-                        <th>Max Speed<button id="velocityGraph" disabled="true">graph</button></th> 
-                        <th>Pie Filling<button id="forceGraph" disabled="true">graph</button></th>
+                         
+                        <th>Max Speed<button id="velocityGraph" disabled="true" hidden="hidden">graph</button></th> 
+                        <th>Damage - No Helmet<button id="forceGraph" disabled="true" hidden ="hidden">graph</button></th>
+                        <th>Damage - With Helmet<button id="helmetGraph" disabled="true" hidden ="hidden">graph</button></th>
+                         
+                         <!--
+                        <th>Max Speed</th> 
+                        <th>Pie Filling</th>
+                         -->
+                         
                         
                       </tr>
                     <tr>
                       <td id="1r">A</td>
                       <td id="1v">--</td>
                       <td id="1f">--</td>
+                      <td id="1h">--</td>
                     </tr>
                     <tr>
                       <td id="2r">B</td>
                       <td id="2v">--</td>
                       <td id="2f">--</td>
+                      <td id="2h">--</td>
                     </tr>
                     <tr>
                       <td id="3r">C</td>
                       <td id="3v">--</td>
                       <td id="3f">--</td>
+                      <td id="3h">--</td>
                     </tr>
                     <tr>
                       <td id="4r">D</td>
                       <td id="4v">--</td>
                       <td id="4f">--</td>
+                      <td id="4h">--</td>
                     </tr>
                     <tr>
                       <td id="5r">E</td>
                       <td id="5v">--</td>
                       <td id="5f">--</td>
+                      <td id="5h">--</td>
                     </tr>                   
                 </table> 
                 <button id="clearTable">Clear Table</button>

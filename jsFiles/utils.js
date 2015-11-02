@@ -35,6 +35,10 @@ function init(context, ball, rig, myScreen, myFlags, mySayings){
                 myScreen.xArcEdge = rig.pivotX-9+(rig.radiusOfLine+35)*Math.sin(Math.PI*.25);
                 
                 mySayings.initializeSayings();
+                
+                document.getElementById('helmetMessage').style.visibility = "hidden";      
+                document.getElementById('helmetPicker').style.visibility = "hidden";
+                document.getElementById('helmetPicker').disabled=true;
 
                 drawScene(context, rig, ball, 1, myScreen, myFlags);
                 reportVelocity(context, 0,0,0);
@@ -78,28 +82,37 @@ function getTableValues (columnName, columnNumber){
 
 function disableStuff()
             {                                  
-                document.getElementById('startStop').disabled=true;
-                document.getElementById('ticMessage').style.color = 'gray';                   
-                //document.getElementById('dragCheck').disabled=true;                    
+                //document.getElementById('startStop').disabled=true;
+                //document.getElementById('ticMessage').style.color = 'gray';                   
+                //document.getElementById('dragCheck').disabled=true;   
+                
+                document.getElementById('startStop').textContent="End Simulation";
                 $( "#ticPicker").attr('disabled', 'disabled');                                        
+                $( "#helmetPicker").attr('disabled', 'disabled');      
                 document.getElementById('clearTable').disabled=true;
                 document.getElementById('velocityGraph').disabled=true;
                 document.getElementById('forceGraph').disabled=true;
+                
                 document.getElementById('scenario1').disabled=true;
                 document.getElementById('scenario2').disabled=true;
+                document.getElementById('scenario3').disabled=true;
             };
             
 function enableStuff(wreckageFlag)
             {                
-                document.getElementById('startStop').disabled=false;
-                document.getElementById('ticMessage').style.color = 'black';                   
-                //document.getElementById('dragCheck').disabled=false;                    
-                $( "#ticPicker").removeAttr('disabled');                                        
+                //document.getElementById('startStop').disabled=false;
+                //document.getElementById('ticMessage').style.color = 'black';                   
+                //document.getElementById('dragCheck').disabled=false;    
+                document.getElementById('startStop').textContent="Begin Simulation";
+                $( "#ticPicker").removeAttr('disabled');   
+                $( "#helmetPicker").removeAttr('disabled');   
                 document.getElementById('clearTable').disabled=false;  
                 document.getElementById('velocityGraph').disabled=false;                
                 if(wreckageFlag)
                     document.getElementById('forceGraph').disabled=false;
+                
                 document.getElementById('scenario1').disabled=false;
                 document.getElementById('scenario2').disabled=false;               
+                document.getElementById('scenario3').disabled=false;  
             };
 

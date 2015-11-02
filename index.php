@@ -486,7 +486,7 @@
                     angle = (Math.PI/2)*(tics/ticNumber);
                     drawScene(rig, ball, prev, angle, radiusOfLine, ball.ballSize, 1);                          
                     document.getElementById('ticMessage').style.color = 'black';
-                    document.getElementById('startStop').textContent="Begin Simulation";
+                    document.getElementById('startStop').textContent="Begin Simulation!!";
                     document.getElementById('dragCheck').disabled=false;
                     document.getElementById('clearTable').disabled=false;                     
                     document.getElementById('velocityGraph').disabled=false;

@@ -52,6 +52,7 @@ var flags = function(){
     this.shatterFlag  = false;                
     this.moveFlag = false;
     this.wreckageFlag = false;
+    this.helmetFlag = false;
     
 };
 
@@ -74,7 +75,9 @@ var sayings = function ()
     this.dizzySayings = [];
     };
 
-sayings.prototype.initializeSayings = function(){
+sayings.prototype.initializeSayings = function()
+{
+    
          this.lameSayings.push("Weak sauce, brah");
          this.lameSayings.push("My grandma skates better");
          this.lameSayings.push("Afraid of skinning your knee?");
@@ -124,12 +127,12 @@ sayings.prototype.initializeSayings = function(){
          this.dizzySayings.push("Release the pumpkin bomb");
          this.dizzySayings.push("Will a pumpkin ever go to space?");
     };
-    
+ 
 sayings.prototype.output = function()
 {
     for(i=0; i<this.lameSayings.length; i++)
-        //console.log(this.lameSayings[i]);
+        console.log(this.lameSayings[i]);
     for(i=0; i<this.goodSayings.length; i++)
-        //console.log(this.goodSayings[i]);
+        console.log(this.goodSayings[i]);
     
 };
