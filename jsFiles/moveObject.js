@@ -3,7 +3,6 @@ var moveObject = function(bs, bm, x, y, vx, vy)
                     this.moverImages = [];
                     this.helmetImages = [];
                     this.skaterImages = [];
-                    
                     this.ballSize = bs;
                     this.ballMass = bm;
                     this.positionX = x; 
@@ -24,9 +23,14 @@ var moveObject = function(bs, bm, x, y, vx, vy)
                     this.message = "";
                     this.helmet = 0;
                     
-                    this.getImages(6, "gourd", this.moverImages);
+                    this.getImages(6, "pumpkinG", this.moverImages);
                     this.getImages(4, "helmet", this.helmetImages);
                     this.getImages(4, "skater", this.skaterImages);
+                    
+                    this.crashImage = new Image();
+                    this.crashImage.src = "imageFiles/crashTest_1.png";
+                    
+                                           
                  };
                  
                  
@@ -107,6 +111,13 @@ var moveObject = function(bs, bm, x, y, vx, vy)
                             else 
                                 context.drawImage(this.helmetImages[0],posX, posY, dimX, dimY);                           
                         }
+                        
+                        if (myFlags.sensorFlag)
+                        {
+                            context.drawImage(this.crashImage, posX+rBall-Math.round(dimX/6), posY, Math.round(dimX/3), Math.round(dimY/3));
+                        }
+                            
+                        
                     }
                     else         
                     {

@@ -16,7 +16,6 @@ $(window).load(function() {
             var ball = new moveObject(20, 5, 300, 395, 0, 0);  //the moving object, size, mass, (x,y) starting coordinates, (x,y) starting velocity 
             
             
-            
             init(context, ball, rig, myScreen, myFlags, mySayings);
             
             enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics, mySayings);

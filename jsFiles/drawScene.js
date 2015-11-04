@@ -61,5 +61,11 @@ function drawScene(context, rig, ball, blur, screen, myFlags)
                 
                 for (i = 0; i < ball.pieces.length; i++)
                     ball.pieces[i].draw(context);
+                
+                if (myFlags.sensorFlag)
+                {
+                    context.drawImage(ball.crashImage, 480, 20, 60, 60);
+                    writeMessage(context, "                                ENERGY SENSOR IS ACTIVE");
+                }
             };
             

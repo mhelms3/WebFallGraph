@@ -96,6 +96,8 @@ function disableStuff()
                 document.getElementById('scenario1').disabled=true;
                 document.getElementById('scenario2').disabled=true;
                 document.getElementById('scenario3').disabled=true;
+                document.getElementById('scenario4').disabled=true;
+                document.getElementById('scenario5').disabled=true;
             };
             
 function enableStuff(wreckageFlag)
@@ -114,5 +116,6 @@ function enableStuff(wreckageFlag)
                 document.getElementById('scenario1').disabled=false;
                 document.getElementById('scenario2').disabled=false;               
                 document.getElementById('scenario3').disabled=false;  
+                document.getElementById('scenario4').disabled=false;  
             };
 

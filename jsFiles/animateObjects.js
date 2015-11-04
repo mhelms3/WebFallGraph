@@ -13,13 +13,11 @@ function drawPendulum(mySayings, myScreen, myFlags, myPhysics, myTimer, ball, ri
         if(myFlags.arcFlag)
         {
             ball.update(myTimer, myPhysics, myFlags, myScreen, rig);
-            
         }
         else
         {
             if(ball.velocityX!==0 && ball.velocityY!==0)
                 ball.updateBallistic(context, rig, myTimer, myPhysics, myFlags, myScreen);
-            
         }
         
         
@@ -35,6 +33,8 @@ function drawPendulum(mySayings, myScreen, myFlags, myPhysics, myTimer, ball, ri
         //console.log("WreckFlag:"+wreckageFlag);
 
         var forceCell = ball.tics+"f";      
+        var percentCell = ball.tics+"p";
+        var percentDamaged;
         
 
         if(myFlags.wreckageFlag && ball.angle<0)
@@ -52,8 +52,12 @@ function drawPendulum(mySayings, myScreen, myFlags, myPhysics, myTimer, ball, ri
                 
                 if (forceBall > ball.maxForceBall) 
                 {
-                    ball.maxForceBall = forceBall;                                
-                    document.getElementById(forceCell).textContent=ball.maxForceBall.toFixed(2);                                
+                    ball.maxForceBall = forceBall;
+                    percentDamaged = ball.maxForceBall*7.4;
+                    if (myFlags.percentFlag)
+                        document.getElementById(percentCell).textContent=Math.round(percentDamaged);                                
+                    if (myFlags.sensorFlag)
+                        document.getElementById(forceCell).textContent=ball.maxForceBall.toFixed(2);                                
                 };
                 myFlags.shatterFlag = true;
                 ball.velocity = ball.velocity*-0.45;

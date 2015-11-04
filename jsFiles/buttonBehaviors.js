@@ -77,11 +77,14 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                     clearColumn("v", 5);
                     clearColumn("f", 5);
                     clearColumn("h", 5);
+                    clearColumn("p", 5);
                 }, false);
 
                 //velocity Sim
                 scenario1.addEventListener('click', function(evt) {
                     myFlags.wreckageFlag=false;
+                    myFlags.percentFlag=false;
+                    myFlags.sensorFlag=false;
                     myFlags.helmetFlag = false;
                     ball.tics=document.getElementById('ticPicker').value;            
                     ball.setTicAngle(rig.maxTicNumber);
@@ -93,8 +96,24 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                 }, false);
 
                 //wreckage Sim
-                scenario2.addEventListener('click', function(evt) {
+                 scenario2.addEventListener('click', function(evt) {
                     myFlags.wreckageFlag=true;
+                    myFlags.percentFlag=true;
+                    myFlags.sensorFlag=false;
+                    myFlags.helmetFlag = false;
+                    ball.tics=document.getElementById('ticPicker').value;                            
+                    ball.setTicAngle(rig.maxTicNumber);
+                    ball.helmet = 0;
+                    drawScene(context, rig, ball, 1, myScreen, myFlags);
+                    document.getElementById('helmetMessage').style.visibility = "hidden";      
+                    document.getElementById('helmetPicker').style.visibility = "hidden";
+                    document.getElementById('helmetPicker').disabled=true;
+                }, false);
+                
+                scenario3.addEventListener('click', function(evt) {
+                    myFlags.wreckageFlag=true;
+                    myFlags.percentFlag=false;
+                    myFlags.sensorFlag=true;
                     myFlags.helmetFlag = false;
                     ball.tics=document.getElementById('ticPicker').value;                            
                     ball.setTicAngle(rig.maxTicNumber);
@@ -106,8 +125,10 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                 }, false);
                 
                 //helmet Sim
-                scenario3.addEventListener('click', function(evt) {
+                scenario4.addEventListener('click', function(evt) {
                     myFlags.wreckageFlag=true;
+                    myFlags.percentFlag=false;
+                    myFlags.sensorFlag=true;                    
                     myFlags.helmetFlag = true;
                     ball.tics=document.getElementById('ticPicker').value;                            
                     ball.setTicAngle(rig.maxTicNumber);

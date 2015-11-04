@@ -53,6 +53,9 @@ var flags = function(){
     this.moveFlag = false;
     this.wreckageFlag = false;
     this.helmetFlag = false;
+    this.percentFlag=false;
+    this.sensorFlag=false;
+                    
     
 };
 
@@ -78,14 +81,17 @@ var sayings = function ()
 sayings.prototype.initializeSayings = function()
 {
     
-         this.lameSayings.push("Weak sauce, brah");
-         this.lameSayings.push("My grandma skates better");
+         this.lameSayings.push("Weak sauce");
+         this.lameSayings.push("I've seen gophers skate better");
          this.lameSayings.push("Afraid of skinning your knee?");
          this.lameSayings.push("Perhaps we shall watch the paint dry next?");
-         this.lameSayings.push("Do you still swim in the kiddie pool, too?");
-         this.lameSayings.push("Fried fish fingers");
+         this.lameSayings.push("We all have to learn somewhere");
+         this.lameSayings.push("My other vehicle is a TARDIS");
+         this.lameSayings.push("Fish fingers and custard");
          this.lameSayings.push("Tarter it up");
          this.lameSayings.push("Knock. Knock.");
+         this.lameSayings.push("Try try try");
+         this.lameSayings.push("Snail");
          
          
          this.goodSayings.push("Shushers, man");
@@ -96,6 +102,9 @@ sayings.prototype.initializeSayings = function()
          this.goodSayings.push("Rousing good show, governer.");
          this.goodSayings.push("Pip pip.");
          this.goodSayings.push("Who's there?");
+         this.goodSayings.push("Have you seen my space hamster, Boo?");
+         this.goodSayings.push("The end is the beginning is the end");
+         
          
          this.awesomeSayings.push("Cowabunga little dude");
          this.awesomeSayings.push("Grabbin' some air!");
@@ -103,29 +112,32 @@ sayings.prototype.initializeSayings = function()
          this.awesomeSayings.push("Super laser awesome sauce!");
          this.awesomeSayings.push("Who ordered the pizza?");
          this.awesomeSayings.push("Like, totally, ya know");
-         this.awesomeSayings.push("Got my CHEEZE WHIZ BOY?");
-         this.awesomeSayings.push("Flower power, puff'n'floof");
+         this.awesomeSayings.push("Got my CHEEZE WHIZ?");
+         this.awesomeSayings.push("Pumkin power!");
          this.awesomeSayings.push("Pumpkin spiced lattes for everyone!");
-         this.awesomeSayings.push("Live long and prosper. Spock out.");
+         this.awesomeSayings.push("Live long and prosper. Spock out. ");
          this.awesomeSayings.push("Pumpkin on a roll!");
          this.awesomeSayings.push("Banana! Banana who?");
-         this.awesomeSayings.push("Banana! Banana who?");
-         this.awesomeSayings.push("Banana! Banana who?");
          this.awesomeSayings.push("Orange you glad I didn't say banana");
+         this.awesomeSayings.push("Heavy metal machine!");
          
          
-         this.dizzySayings.push("I think I'm going to hurl");
-         this.dizzySayings.push("My brain is melting");
+         this.dizzySayings.push("I think my pumkin seeds are falling out");
+         this.dizzySayings.push("My brain is spinning");
          this.dizzySayings.push("MATHMATICAL!");
          this.dizzySayings.push("Whoa! Algerbraic!");
          this.dizzySayings.push("Slamacow!");
          this.dizzySayings.push("I feel radder, faster.");
-         this.dizzySayings.push("No worms on the bed");
+         this.dizzySayings.push("Did I just blind you with SCIENCE!");
          this.dizzySayings.push("Holy stuff. Wow-cow-chow.");
-         this.dizzySayings.push("Its pretty math on the pumpkin path.");
-         this.dizzySayings.push("Werewolves. Mush worse than ogres.");
+         this.dizzySayings.push("I am a leaf on the wind!");
          this.dizzySayings.push("Release the pumpkin bomb");
-         this.dizzySayings.push("Will a pumpkin ever go to space?");
+         this.dizzySayings.push("Pumpkins...In....Spaaaaaace!");
+         this.dizzySayings.push("Rocket mode unlocked.");
+         this.dizzySayings.push("Mellon Collie and the Infinite Sadness");
+         this.dizzySayings.push("Raindrops + Sunshowers");
+         this.dizzySayings.push("Rhinoceros and Mayonaise");
+         
     };
  
 sayings.prototype.output = function()

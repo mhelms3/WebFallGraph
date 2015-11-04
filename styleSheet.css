@@ -14,6 +14,7 @@
     width: auto;
     float: left;    
     margin-left: 20px;
+    margin-top: 20px;
     font-size: 110%;    
 }
 
@@ -44,6 +45,7 @@
 
 #bottomPane{
     margin: 0px;
+    height: auto;
     
 }
 
@@ -71,4 +73,5 @@ td {
     width: 110px;
     font-size: 14px;
     margin-left: 5px;
+    margin-top: 5px;
 }
