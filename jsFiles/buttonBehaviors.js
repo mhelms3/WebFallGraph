@@ -46,8 +46,13 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                         }
                         else
                             document.getElementById('helmetPicker').selectedIndex = ball.helmet-1;
-                        
                     }
+                    else
+                    {
+                         ball.helmet=document.getElementById('helmetPicker').value;            
+                         drawScene(context, rig, ball, 1, myScreen, myFlags);
+                    }
+                        
                     
                     
                     //ball.helmet=document.getElementById('helmetPicker').value;            
@@ -79,13 +84,62 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                     clearColumn("h", 5);
                     clearColumn("p", 5);
                 }, false);
+                
+                function checkPasscode(n)
+                {
+                    if (n>myFlags.passcode)
+                    {
+                        myFlags.passcode = n;
+                        console.log(myFlags.passcode);
+                        enableStuff(myFlags);
+                    }
+                    document.getElementById('passcodeInput').style.color = "green";  
+                };
 
+                function checkVisible()
+                {
+                    if (myFlags.hiddenControlsFlag)
+                    {
+                        document.getElementById('rightPane').style.display = "block";  
+                        myFlags.hiddenControlsFlag = false;
+                        
+                    } 
+                };
+                
+                passcodeInput.addEventListener('click', function(evt) {
+                    this.value = "";
+                    this.style.color = "blue";
+                }, false);
+                
+                passcodeInput.addEventListener('keyup', function(evt) {
+                    var inputString = this.value;
+                    console.log(inputString);
+                    switch (inputString) {
+                    case "two":
+                        checkPasscode(2);
+                        this.style.color = "green";
+                        break;
+                    case "three":
+                        checkPasscode(3);
+                        break;
+                    case "four":
+                        checkPasscode(4);
+                        break;
+                    case "five":
+                        checkPasscode(5);
+                        break;
+                    default:
+                        this.style.color = "blue";  
+                    }
+                }, false);
+                
                 //velocity Sim
                 scenario1.addEventListener('click', function(evt) {
                     myFlags.wreckageFlag=false;
                     myFlags.percentFlag=false;
                     myFlags.sensorFlag=false;
                     myFlags.helmetFlag = false;
+                    checkVisible();
                     ball.tics=document.getElementById('ticPicker').value;            
                     ball.setTicAngle(rig.maxTicNumber);
                     ball.helmet = 0;
@@ -101,6 +155,7 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                     myFlags.percentFlag=true;
                     myFlags.sensorFlag=false;
                     myFlags.helmetFlag = false;
+                    checkVisible();
                     ball.tics=document.getElementById('ticPicker').value;                            
                     ball.setTicAngle(rig.maxTicNumber);
                     ball.helmet = 0;
@@ -115,6 +170,7 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                     myFlags.percentFlag=false;
                     myFlags.sensorFlag=true;
                     myFlags.helmetFlag = false;
+                    checkVisible();
                     ball.tics=document.getElementById('ticPicker').value;                            
                     ball.setTicAngle(rig.maxTicNumber);
                     ball.helmet = 0;
@@ -130,6 +186,7 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                     myFlags.percentFlag=false;
                     myFlags.sensorFlag=true;                    
                     myFlags.helmetFlag = true;
+                    checkVisible();
                     ball.tics=document.getElementById('ticPicker').value;                            
                     ball.setTicAngle(rig.maxTicNumber);
                     ball.helmet = document.getElementById('helmetPicker').value;
@@ -151,7 +208,7 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                         drawScene(context, rig, ball, 1, myScreen, myFlags);
                         reportVelocity(context, 0,0,0);
                         document.getElementById('velocityGraph').textContent="graph";                     
-                        enableStuff(myFlags.wreckageFlag);                                       
+                        enableStuff(myFlags);                                       
                     }
                     else
                     {   
@@ -173,7 +230,7 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                         drawScene(context, rig, ball, 1, myScreen, myFlags);
                         reportVelocity(context, 0,0,0);
                         document.getElementById('forceGraph').textContent="graph"; 
-                        enableStuff(myFlags.wreckageFlag);                                       
+                        enableStuff(myFlags);                                       
                     }
                     else
                     {   

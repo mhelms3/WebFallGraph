@@ -48,6 +48,17 @@
     height: auto;
     
 }
+#passcodeDiv
+{
+    margin-left: 10px;
+    font-size: 100%;
+    font-weight: bold;
+}
+
+#passcodeInput
+{
+    color: gray;
+}
 
 th, td{
     background-color: lightgreen;

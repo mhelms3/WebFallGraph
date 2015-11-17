@@ -7,11 +7,22 @@ var screenObject = function(bh, bw){
         this.boxWidth = bw;
         this.yArcEdge = 0;
         this.xArcEdge = 0;
+        
+        this.wallImage = new Image();
+        this.wallImage.src = "imageFiles/cautionWall.png";
+        
+        this.backGroundImage = [];
+        this.backGroundImage[0] = new Image();
+        this.backGroundImage[0].src = "imageFiles/labBackground3.png";
+        this.backGroundImage[1] = new Image();
+        this.backGroundImage[1].src = "imageFiles/labBackground.png";
+        this.backGroundImage[2] = new Image();
+        this.backGroundImage[2].src = "imageFiles/cityBackground3.png";
      };
 
 
 var timerObject = function(){
-        this.maxTime = 0.5;
+        this.maxTime = 0.1;
         this.totalTime = 0;
         this.numTime = 0;
         this.lastTime = 0;
@@ -34,7 +45,7 @@ timerObject.prototype.update = function(){
               this.timeDelta = (this.timeNow - this.timePrev)/1200;  
 
               if(this.timeDelta>this.maxTime)
-                  this.timeDelta = .014;
+                  this.timeDelta = .0005;
       };
             
 var physicsObject = function(g, df){
@@ -47,6 +58,7 @@ var flags = function(){
     this.noRampFlag = true;
     this.graphFlag = true;
     this.arcFlag = true;
+    this.hiddenControlsFlag = true;
     //DRAG IS DISABLED
     //this.dragFlag = false; 
     this.shatterFlag  = false;                
@@ -55,8 +67,11 @@ var flags = function(){
     this.helmetFlag = false;
     this.percentFlag=false;
     this.sensorFlag=false;
-                    
     
+    this.trickFlag=false;    
+    this.messageFlag = false;
+    
+    this.passcode = 1;
 };
 
 var scene = function (screen, timer, physics, flags, mover, rig)

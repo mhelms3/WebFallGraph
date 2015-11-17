@@ -14,19 +14,22 @@ function skaterExpression (context, ball)
     var textOffset = 125;
     context.save();
             //context.rotate(-ball.angle);        
-            context.translate(textOffset+250, textOffset);
+            context.translate(textOffset+95, textOffset);
             context.font = '12pt Calibri';
-            context.fillStyle = 'black';
+            context.fillStyle = 'blue';
             context.fillText(ball.message, 0, 0);
    context.restore();
 };
               
-function init(context, ball, rig, myScreen, myFlags, mySayings){                                          
-                context.save();  
-                  context.lineWidth = 10;
-                  context.strokeRect(5,5,myScreen.boxWidth-5,myScreen.boxHeight-5);
-                context.restore();
+function activateButtons()
+{
+    $("[id^=scenario]").prop('disabled', true);  
+    $("[id^=scenario1]").prop('disabled', false);  
+    
+}
 
+function init(context, ball, rig, myScreen, myFlags, mySayings){                                          
+                
                 rig.radiusOfLine = ball.originY - rig.pivotY;  
                 ball.tics=document.getElementById('ticPicker').value;            
                 ball.setTicAngle(rig.maxTicNumber);
@@ -40,8 +43,10 @@ function init(context, ball, rig, myScreen, myFlags, mySayings){
                 document.getElementById('helmetPicker').style.visibility = "hidden";
                 document.getElementById('helmetPicker').disabled=true;
 
-                drawScene(context, rig, ball, 1, myScreen, myFlags);
-                reportVelocity(context, 0,0,0);
+                //drawScene(context, rig, ball, 1, myScreen, myFlags);
+                initialScreen(context, myScreen);
+                activateButtons();
+                //reportVelocity(context, 0,0,0);
                 
             };
 
@@ -59,7 +64,7 @@ function reportVelocity (context, velocity, maxVelocity, tics){
                 if (tics>0)
                 {
                     var velocityCell = tics+"v";                 
-                    document.getElementById(velocityCell).textContent=maxVelocity.toFixed(2) ;
+                    document.getElementById(velocityCell).textContent=maxVelocity.toFixed(2);
                 }
                 
             };
@@ -98,9 +103,11 @@ function disableStuff()
                 document.getElementById('scenario3').disabled=true;
                 document.getElementById('scenario4').disabled=true;
                 document.getElementById('scenario5').disabled=true;
+                
+                document.getElementById('passcodeInput').disabled=true;
             };
             
-function enableStuff(wreckageFlag)
+function enableStuff(myFlags)
             {                
                 //document.getElementById('startStop').disabled=false;
                 //document.getElementById('ticMessage').style.color = 'black';                   
@@ -110,12 +117,20 @@ function enableStuff(wreckageFlag)
                 $( "#helmetPicker").removeAttr('disabled');   
                 document.getElementById('clearTable').disabled=false;  
                 document.getElementById('velocityGraph').disabled=false;                
-                if(wreckageFlag)
+                if(myFlags.wreckageFlag)
                     document.getElementById('forceGraph').disabled=false;
                 
-                document.getElementById('scenario1').disabled=false;
-                document.getElementById('scenario2').disabled=false;               
-                document.getElementById('scenario3').disabled=false;  
-                document.getElementById('scenario4').disabled=false;  
+                if(myFlags.passcode>0)
+                    document.getElementById('scenario1').disabled=false;
+                if(myFlags.passcode>1)
+                    document.getElementById('scenario2').disabled=false;               
+                if(myFlags.passcode>2)
+                    document.getElementById('scenario3').disabled=false;  
+                if(myFlags.passcode>3)
+                    document.getElementById('scenario4').disabled=false;  
+                if(myFlags.passcode>4)
+                    document.getElementById('scenario5').disabled=false;  
+                
+                document.getElementById('passcodeInput').disabled=false;
             };
 

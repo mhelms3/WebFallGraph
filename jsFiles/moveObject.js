@@ -24,7 +24,7 @@ var moveObject = function(bs, bm, x, y, vx, vy)
                     this.helmet = 0;
                     
                     this.getImages(6, "pumpkinG", this.moverImages);
-                    this.getImages(4, "helmet", this.helmetImages);
+                    this.getImages(8, "helmet", this.helmetImages);
                     this.getImages(4, "skater", this.skaterImages);
                     
                     this.crashImage = new Image();
@@ -77,15 +77,15 @@ var moveObject = function(bs, bm, x, y, vx, vy)
                         posY = -rBall+rPend;
                         if(myFlags.shatterFlag)
                             {
-                                if (this.maxForceBall<.5)
+                                if (this.maxForceBall/(this.ballMass/5)<.5)
                                     context.drawImage(this.moverImages[0],posX, posY, dimX, dimY);                           
-                                else if(this.maxForceBall<2)
+                                else if(this.maxForceBall/(this.ballMass/5)<2)
                                     context.drawImage(this.moverImages[1],posX, posY, dimX, dimY);
-                                else if(this.maxForceBall<4)
+                                else if(this.maxForceBall/(this.ballMass/5)<4)
                                     context.drawImage(this.moverImages[2],posX, posY, dimX, dimY);
-                                else if(this.maxForceBall<7)
+                                else if(this.maxForceBall/(this.ballMass/5)<7)
                                     context.drawImage(this.moverImages[3],posX, posY, dimX, dimY);
-                                else if(this.maxForceBall<10)
+                                else if(this.maxForceBall/(this.ballMass/5)<10)
                                     context.drawImage(this.moverImages[4],posX, posY, dimX, dimY);
                                 else 
                                     context.drawImage(this.moverImages[5],posX, posY, dimX, dimY);
@@ -98,24 +98,13 @@ var moveObject = function(bs, bm, x, y, vx, vy)
                         dimY = rBall*2+4;
                         posX = -rBall-2;
                         posY = -rBall+rPend-2;
-                        if(myFlags.helmetFlag)
-                        {
-                            if (this.helmet == 1)
-                                context.drawImage(this.helmetImages[0],posX, posY, dimX, dimY);                          
-                            else if (this.helmet == 2)
-                                context.drawImage(this.helmetImages[1],posX, posY, dimX, dimY);                           
-                            else if (this.helmet == 3)
-                                context.drawImage(this.helmetImages[2],posX, posY, dimX, dimY);  
-                            else if (this.helmet == 4)
-                                context.drawImage(this.helmetImages[3],posX, posY, dimX, dimY);  
-                            else 
-                                context.drawImage(this.helmetImages[0],posX, posY, dimX, dimY);                           
-                        }
                         
+                        if(myFlags.helmetFlag)
+                            context.drawImage(this.helmetImages[this.helmet-1],posX, posY, dimX, dimY);                          
+                        
+                        //draw sensor
                         if (myFlags.sensorFlag)
-                        {
                             context.drawImage(this.crashImage, posX+rBall-Math.round(dimX/6), posY, Math.round(dimX/3), Math.round(dimY/3));
-                        }
                             
                         
                     }
@@ -124,6 +113,15 @@ var moveObject = function(bs, bm, x, y, vx, vy)
                         //draw skater
                         dimX = rBall*5;
                         dimY = rBall*6;
+                        
+                        /*
+                            posX = -rBall*3+20;
+                            posY = -rBall*5+3+rPend;
+                            if(this.velocity>0)
+                                context.drawImage(this.skaterImages[1],posX, posY, dimX, dimY);
+                            else
+                                context.drawImage(this.skaterImages[0],posX, posY, dimX, dimY);
+                        */
                         
                         if(!myFlags.arcFlag)
                         {
@@ -145,13 +143,38 @@ var moveObject = function(bs, bm, x, y, vx, vy)
                             else
                                 context.drawImage(this.skaterImages[0],posX, posY, dimX, dimY);
                         }
+                    
                     }
   
             };       
             
             moveObject.prototype.setTicAngle = function(maxTicNumber) 
             {
-                this.angle = (Math.PI/2)*(this.tics/maxTicNumber);
+                console.log(this.tics);
+                var ratioA = 0;
+                //these numbers selected to create a linear graph
+                switch(this.tics) {
+                case "1":
+                    ratioA = 0.1806686;
+                    break;
+                case "2":
+                    ratioA = 0.3654094;
+                    break;
+                case "3":
+                    ratioA = 0.5578684;
+                    break;
+                case "4":
+                    ratioA = 0.76556;
+                    break;
+                case "5":
+                    ratioA = 1;
+                    break;
+                default:
+                    ratioA = 0;
+            } 
+                //this.angle = (Math.PI/2)*(this.tics/maxTicNumber);
+                this.angle = (Math.PI/2)*ratioA;
+                console.log(this.angle);
             };
             
             moveObject.prototype.update = function(myTimer, myPhysics, myFlags, myScreen, rig) 
@@ -214,13 +237,18 @@ var moveObject = function(bs, bm, x, y, vx, vy)
                 if (this.velocityY>0 && this.positionX>rig.pivotX && this.positionY<yEdge)
                 {
                     this.velocityX = .5;
-                    this.getMessage(mySayings);
+                    if(!myFlags.messageFlag)
+                        this.getMessage(mySayings);
                     myFlags.arcFlag = false;
                 }
                 else if(this.velocity>0 && this.message == "")
                 {
-                    this.getMessage(mySayings);
+                    if(!myFlags.messageFlag)
+                        this.getMessage(mySayings);
                 }
+                else
+                    myFlags.arcFlag = true;
+              
                     
             };
             

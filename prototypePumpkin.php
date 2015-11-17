@@ -9,7 +9,7 @@
 
 <html>
     <head> 
-        <title>Gourdon, The Flying Pumpkin</title>
+        <title>The Helmet Challenge - Simulation Tool</title>
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="styleSheet.css">
 
@@ -31,7 +31,7 @@
     </head>
 
     <body>
-        <div id="topTitle"><h2>The Flying Pumpkin</h2></div>
+        <div id="topTitle"><h3>The Helmet Challenge - Simulation Tool</h3></div>
 
         <div id="leftPane">
             <canvas id="myCanvas" width="700" height="475">
@@ -40,14 +40,20 @@
             <div id="bottomPane">
 
                 <button class ="progressButton" id="scenario1" >1. Skater Speed Check</button>
-                <button class ="progressButton" id="scenario2" >2. Smashing Pumpkins</button>
-                <button class ="progressButton" id="scenario3">3. Smashing with Sensor</button>
-                <button class ="progressButton" id="scenario4" >4. Helmet Tests </button>
+                <button class ="progressButton" id="scenario2" disabled="disabled">2. Smashing Pumpkins</button>
+                <button class ="progressButton" id="scenario3" disabled="disabled">3. Smashing with Sensor</button>
+                <button class ="progressButton" id="scenario4" disabled="disabled">4. Helmet Tests </button>
                 <button class ="progressButton" id="scenario5" disabled="disabled">5. New Skate Parks </button>
+            </div>
+            <div id="passcodeDiv">
+                <br>
+                Enter passcode here to advance to the next level of analysis     <input type="text" id="passcodeInput" value="enter passcode">
+                <br>
+            
             </div>
         </div>
 
-        <div id="rightPane">
+        <div id="rightPane"  style="display:none;">
 
             <button id="startStop">Begin Simulation</button>
             <br>
@@ -69,6 +75,10 @@
                 <option value=2>Green Helmet</option>
                 <option value=3>Eagle Helmet</option>
                 <option value=4>Pink Helmet</option>
+                <option value=5>Blue Helmet</option>
+                <option value=6>Red Helmet</option>
+                <option value=7>Halo Helmet</option>
+                <option value=8>Stormtrooper Helmet</option>
             </select> 
 
             <br>
@@ -84,10 +94,10 @@
                 <tr>
                     <th>Pumpkin Level</th>
 
-                    <th>Max Speed<button id="velocityGraph" disabled="true" hidden="hidden">graph</button></th> 
-                    <th>Percent Damaged<button id="velocityGraph" disabled="true" hidden="hidden">graph</button></th> 
-                    <th>Energy - No Helmet<button id="forceGraph" disabled="true" hidden ="hidden">graph</button></th>
-                    <th>Energy - With Helmet<button id="helmetGraph" disabled="true" hidden ="hidden">graph</button></th>
+                    <th>Max Speed (m/s)<button id="velocityGraph" disabled="true" hidden="hidden">graph</button></th> 
+                    <th>Percent Damaged (%)<button id="velocityGraph" disabled="true" hidden="hidden">graph</button></th> 
+                    <th>Energy - No Helmet (Joules)<button id="forceGraph" disabled="true" hidden ="hidden">graph</button></th>
+                    <th>Energy - With Helmet (Joules)<button id="helmetGraph" disabled="true" hidden ="hidden">graph</button></th>
 
                     <!--
                    <th>Max Speed</th> 

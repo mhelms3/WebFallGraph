@@ -20,6 +20,7 @@
                     context.stroke();                    
                 context.restore();     
                 }
+                /*
                 else
                 {
                     context.save();
@@ -40,6 +41,7 @@
                         context.stroke();                    
                     context.restore();   
                 }
+                */
                 
                 //create tic marks
                 var numDegrees = Math.PI/(rig.maxTicNumber*2);
@@ -51,7 +53,7 @@
                     {
                         context.save();
                             context.lineWidth = ticWidth;                    
-                            context.strokeStyle = 'rgba(0,0,0,1)';
+                            context.strokeStyle = 'rgba(255,255,0,1)';
                             context.translate(rig.pivotX, rig.pivotY);
                             context.rotate(numDegrees*i);
                             context.beginPath();
@@ -59,8 +61,8 @@
                                 context.lineTo(0, rig.radiusOfLine+ticLength/2);                        
                             context.stroke();                                             
                             context.rotate(1/360*(Math.PI*2));
-                            context.font = '12pt Calibri';
-                            context.fillStyle = 'black';
+                            context.font = '16pt Calibri';
+                            context.fillStyle = 'yellow';
                             context.fillText(arcArray[i], 0, rig.radiusOfLine+ticLength+20);
                         context.restore();
                     }

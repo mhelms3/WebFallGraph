@@ -13,9 +13,7 @@ $(window).load(function() {
             var mySayings = new sayings();
             
             var rig = new movePath(310, 145, 5); //pivot point, number of tics on scale
-            var ball = new moveObject(20, 5, 300, 395, 0, 0);  //the moving object, size, mass, (x,y) starting coordinates, (x,y) starting velocity 
-            
-            
+            var ball = new moveObject(20, 10, 300, 395, 0, 0);  //the moving object, size, mass, (x,y) starting coordinates, (x,y) starting velocity 
             init(context, ball, rig, myScreen, myFlags, mySayings);
             
             enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics, mySayings);

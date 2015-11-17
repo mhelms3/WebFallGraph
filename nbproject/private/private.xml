@@ -4,11 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Michael/Documents/NetBeansProjects/WebFallGraph/jsFiles/buttonBehaviors.js</file>
+            <file>file:/C:/Users/Michael/Documents/NetBeansProjects/WebFallGraph/jsFiles/utils.js</file>
             <file>file:/C:/Users/Michael/Documents/NetBeansProjects/WebFallGraph/prototypePumpkin.php</file>
+            <file>file:/C:/Users/Michael/Documents/NetBeansProjects/WebFallGraph/jsFiles/simpleObjects.js</file>
             <file>file:/C:/Users/Michael/Documents/NetBeansProjects/WebFallGraph/styleSheet.css</file>
+            <file>file:/C:/Users/Michael/Documents/NetBeansProjects/WebFallGraph/jsFiles/drawScene.js</file>
             <file>file:/C:/Users/Michael/Documents/NetBeansProjects/WebFallGraph/jsFiles/main.js</file>
-            <file>file:/C:/Users/Michael/Documents/NetBeansProjects/WebFallGraph/jsFiles/animateObjects.js</file>
-            <file>file:/C:/Users/Michael/Documents/NetBeansProjects/WebFallGraph/jsFiles/moveObject.js</file>
         </group>
     </open-files>
 </project-private>

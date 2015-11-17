@@ -7,10 +7,11 @@ function drawPendulum(mySayings, myScreen, myFlags, myPhysics, myTimer, ball, ri
 {
         myTimer.update();
         
-        if(!myFlags.wreckageFlag && myFlags.arcFlag)
+        //if(!myFlags.wreckageFlag && myFlags.arcFlag)
+        if(!myFlags.wreckageFlag)
             ball.checkArc(rig, myFlags, myScreen, mySayings);
         
-        if(myFlags.arcFlag)
+        if(myFlags.arcFlag || !myFlags.trickFlag)
         {
             ball.update(myTimer, myPhysics, myFlags, myScreen, rig);
         }
@@ -24,10 +25,12 @@ function drawPendulum(mySayings, myScreen, myFlags, myPhysics, myTimer, ball, ri
         //THIS IS THE ONLY PLACE THE VALUE FOR BLUR SHOULD BE LESS THAN 1              
         drawScene(context, rig, ball, 1, myScreen, myFlags);
 
-        var fudgeV = .006*ball.tics*ball.tics;
+        //var fudgeV = .006*ball.tics*ball.tics;
 
-        if((Math.abs(ball.velocity)+fudgeV)>ball.maxVelocity)
-            ball.maxVelocity=Math.abs(ball.velocity)+fudgeV;                
+        //if((Math.abs(ball.velocity)+fudgeV)>ball.maxVelocity)
+        //    ball.maxVelocity=Math.abs(ball.velocity)+fudgeV;                
+        if((Math.abs(ball.velocity))>ball.maxVelocity)
+            ball.maxVelocity=Math.abs(ball.velocity);                
         reportVelocity(context, ball.velocity, ball.maxVelocity, ball.tics);
         ball.previousAngle = ball.angle;   
         //console.log("WreckFlag:"+wreckageFlag);
@@ -39,12 +42,15 @@ function drawPendulum(mySayings, myScreen, myFlags, myPhysics, myTimer, ball, ri
 
         if(myFlags.wreckageFlag && ball.angle<0)
         {
-                fudgeF = Math.abs(ball.velocity) + fudgeV +.04*ball.tics;
-                forceBall = (fudgeF*fudgeF*ball.ballMass)/10;
+                //fudgeF = Math.abs(ball.velocity) + fudgeV +.04*ball.tics;
+                //forceBall = (fudgeF*fudgeF*ball.ballMass)/10;
+                 
+                var forceV = ball.velocity*ball.velocity; 
+                forceBall = (forceV*ball.ballMass)/10;
                 
                 if (ball.helmet >0)
                 {
-                    forceBall -= ball.helmet*2;
+                    forceBall -= (ball.helmet*.837)*(ball.ballMass/5);
                     if (forceBall < 0)
                         forceBall = 0.001;
                     forceCell = ball.tics+"h";
@@ -53,7 +59,7 @@ function drawPendulum(mySayings, myScreen, myFlags, myPhysics, myTimer, ball, ri
                 if (forceBall > ball.maxForceBall) 
                 {
                     ball.maxForceBall = forceBall;
-                    percentDamaged = ball.maxForceBall*7.4;
+                    percentDamaged = ball.maxForceBall*7.4/(ball.ballMass/5);
                     if (myFlags.percentFlag)
                         document.getElementById(percentCell).textContent=Math.round(percentDamaged);                                
                     if (myFlags.sensorFlag)
@@ -62,7 +68,7 @@ function drawPendulum(mySayings, myScreen, myFlags, myPhysics, myTimer, ball, ri
                 myFlags.shatterFlag = true;
                 ball.velocity = ball.velocity*-0.45;
                 if (ball.pieces.length===0)
-                    createMelonPieces(ball.maxForceBall, ball.velocity, ball);
+                    createMelonPieces(ball.maxForceBall/(ball.ballMass/5), ball.velocity, ball);
                 ball.angle=0.001;
         }
 
@@ -90,8 +96,9 @@ function toggleMove(context, rig, ball, myScreen, myFlags, myTimer, myPhysics, m
         myFlags.arcFlag = true;
         ball.setTicAngle(rig.maxTicNumber);
         drawScene(context, rig, ball, 1, myScreen, myFlags);
-        enableStuff(myFlags.wreckageFlag);     
+        enableStuff(myFlags);     
         myFlags.moveFlag = false;
+        myFlags.messageFlag = false;
     }
     else
     {
