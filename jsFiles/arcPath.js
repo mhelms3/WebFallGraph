@@ -3,13 +3,19 @@
  */
 
 
- function traceArcPath (context, ball, rig, shade, noRampFlag, myScreen) {
+ function traceArcPath (context, ball, rig, shade, myFlags, myScreen) {
                 var arcArray = ["", "A", "B", "C", "D", "E"];
-                var arcPercent = (ball.tics/rig.maxTicNumber)/2;
+               
+     
+                var arcPercent = (ball.startingAngle/(Math.PI/2))/2;
+                //var arcPercent = (ball.tics/rig.maxTicNumber)/2; ///FIX THIS!!!!
+                
+                
+                
                 var arcPathStart = Math.PI*0.5+(arcPercent*Math.PI);
                 var arcPathFinish = arcPathStart - Math.PI*arcPercent;
                 
-                if(noRampFlag)
+                if(myFlags.wreckageFlag)
                 {
                 context.save();
                     context.lineWidth = 2;                    
@@ -47,24 +53,27 @@
                 var numDegrees = Math.PI/(rig.maxTicNumber*2);
                 var ticWidth = 4;
                 var ticLength = ball.ballSize-6;                                              
-                for (i=0; i<rig.maxTicNumber+1; i++)
+                if(!myFlags.displayAltFlag)
                 {
-                    if (arcArray[i]!=="")
+                    for (i=0; i<rig.maxTicNumber+1; i++)
                     {
-                        context.save();
-                            context.lineWidth = ticWidth;                    
-                            context.strokeStyle = 'rgba(255,255,0,1)';
-                            context.translate(rig.pivotX, rig.pivotY);
-                            context.rotate(numDegrees*i);
-                            context.beginPath();
-                                context.moveTo(0, rig.radiusOfLine-ticLength/2);
-                                context.lineTo(0, rig.radiusOfLine+ticLength/2);                        
-                            context.stroke();                                             
-                            context.rotate(1/360*(Math.PI*2));
-                            context.font = '16pt Calibri';
-                            context.fillStyle = 'yellow';
-                            context.fillText(arcArray[i], 0, rig.radiusOfLine+ticLength+20);
-                        context.restore();
+                        if (arcArray[i]!=="")
+                        {
+                            context.save();
+                                context.lineWidth = ticWidth;                    
+                                context.strokeStyle = 'rgba(255,255,0,1)';
+                                context.translate(rig.pivotX, rig.pivotY);
+                                context.rotate(numDegrees*i);
+                                context.beginPath();
+                                    context.moveTo(0, rig.radiusOfLine-ticLength/2);
+                                    context.lineTo(0, rig.radiusOfLine+ticLength/2);                        
+                                context.stroke();                                             
+                                context.rotate(1/360*(Math.PI*2));
+                                context.font = '16pt Calibri';
+                                context.fillStyle = 'yellow';
+                                context.fillText(arcArray[i], 0, rig.radiusOfLine+ticLength+20);
+                            context.restore();
+                        }
                     }
-                };
+                }
             };

@@ -17,6 +17,7 @@ var moveObject = function(bs, bm, x, y, vx, vy)
                     this.acceleration = 0;
                     this.drag = 0;
                     this.angle = 0;  
+                    this.startingAngle = 0;
                     this.previousAngle = 0;
                     this.tics = 0;
                     this.pieces = [];
@@ -148,33 +149,21 @@ var moveObject = function(bs, bm, x, y, vx, vy)
   
             };       
             
-            moveObject.prototype.setTicAngle = function(maxTicNumber) 
+            moveObject.prototype.setTicAngle = function(myFlags) 
             {
                 console.log(this.tics);
-                var ratioA = 0;
-                //these numbers selected to create a linear graph
-                switch(this.tics) {
-                case "1":
-                    ratioA = 0.1806686;
-                    break;
-                case "2":
-                    ratioA = 0.3654094;
-                    break;
-                case "3":
-                    ratioA = 0.5578684;
-                    break;
-                case "4":
-                    ratioA = 0.76556;
-                    break;
-                case "5":
-                    ratioA = 1;
-                    break;
-                default:
-                    ratioA = 0;
-            } 
+                normalAngles = [0.1806686,0.3654094,0.5578684,0.76556, 1, 0];
+                altAngles = [.15, .44, .61, .76, .86, .89, .99, .11, .75, .94];
+                var ratioA;
+                
+                if (myFlags.displayAltFlag)
+                    ratioA = altAngles[this.tics-1];
+                else
+                    ratioA = normalAngles[this.tics-1];
                 //this.angle = (Math.PI/2)*(this.tics/maxTicNumber);
                 this.angle = (Math.PI/2)*ratioA;
-                console.log(this.angle);
+                this.startingAngle = this.angle;
+                console.log(ratioA +" A"+this.angle);
             };
             
             moveObject.prototype.update = function(myTimer, myPhysics, myFlags, myScreen, rig) 

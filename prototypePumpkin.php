@@ -7,6 +7,91 @@
 
 <!DOCTYPE html>
 
+<?php 
+
+
+    $table1ID = "ballData";
+    $table1Columns = 5;
+    $table1Rows = 5;
+    $table1rowLabels = array("r", "v", "p", "f", "h");
+    $table1rowText = array("A", "B", "C", "D", "E");
+    $table1HeaderText = array("Pumpkin Level", "Max Speed (m/s)", "Percent Damanged (%)", "Energy - No Helmet (Joules)", "Energy - With Helmet (Joules)");
+    
+    $table2ID = "altData";
+    $table2Columns = 2;
+    $table2Rows = 8;
+    $table2rowLabels = array("r", "f");
+    $table2rowText = array("Park 1", "Park 2", "Park 3", " Park 4", "Park 5", "Park 6", "Park 7", "Park 8");
+    $table2HeaderText = array("Park", "Energy - (Joules)");
+    
+    $helmetRows = 8;
+    $helmetText = array("Black Helmet", "Green Helmet", "Eagle Helmet", "Pink Helmet", "Blue Helmet", "Red Helmet", "Halo Helmet", "Stormtrooper Helmet");
+                    
+    
+
+
+function makeTable($tableID, $colSize, $rowSize, $headerText, $rowIDs, $rowText)
+{
+                echo("<table id="); echo($tableID); echo('">');
+                echo("<tr>");
+                for($j=0; $j<$colSize; $j++)
+                   {
+                       echo('<th>');
+                       echo($headerText[$j]);
+                       echo('</th>');
+                   }
+                echo("</tr>");
+                for($i=0; $i<$rowSize; $i++)
+                {
+                    echo("<tr>");
+                    for($j=0; $j<$colSize; $j++)
+                    {
+                        echo('<td id="');
+                        echo($i+1);
+                        echo($rowIDs[$j]);
+                        echo('">');
+                        //kludgy -- I know that only the first two will have text, the rest is "--"
+                        if($j==0)
+                            {echo($rowText[$i]);}
+                        else
+                            {echo('--');}
+                        echo('</td>');
+                    }
+                    echo("</tr>");
+                }
+                echo("</table>");
+};
+
+function makeOptionList ($listName, $listLength, $listIDs, $listText, $isVisible)
+{
+    echo('<select id="');
+    echo($listName);
+    echo('" name="');
+    echo($listName);
+    if(!$isVisible)
+    {
+        echo(' visibility="hidden"');
+    }
+    echo('">');
+    
+    for ($i=0; $i<$listLength; $i++)
+    {
+        echo('<option id="');
+        echo($listIDs);
+        echo($i+1);
+        echo('" value=');
+        echo($i+1);
+        echo(">");
+        echo($listText[$i]);
+        echo("</option>");
+    }
+    echo("</select>");
+}
+
+
+?>
+
+
 <html>
     <head> 
         <title>The Helmet Challenge - Simulation Tool</title>
@@ -57,32 +142,24 @@
 
             <button id="startStop">Begin Simulation</button>
             <br>
-            <text id="ticMessage">Choose where to start the flying pumpkin</text>
-            <select id="ticPicker" name="ticPicker">                   
-                <option value=1>A</option>
-                <option value=2>B</option>
-                <option value=3>C</option>
-                <option value=4>D</option>
-                <option value=5>E</option>
-
-            </select> 
-            <br>
-            <br>
-
+            <span id="ticPickerSpan" style="display:block;">
+                <text id="ticMessage">Choose where to start the flying pumpkin</text>
+                <?php
+                    makeOptionList("ticPicker", $table1Rows, "tp" , $table1rowText, true); 
+                ?>
+            </span>
+            
+            <span id="parkPickerSpan" style="display:none;">
+                <text id="parkMessage">Choose which park to test</text>
+                <?php
+                    makeOptionList("parkPicker", $table2Rows, "pp" , $table2rowText, true); 
+                ?>
+            </span>
+           
             <text id="helmetMessage" visibility="hidden">Choose which helmet to use</text>
-            <select id="helmetPicker" visibility="hidden" name="helmetPicker">                   
-                <option value=1>Black Helmet</option>
-                <option value=2>Green Helmet</option>
-                <option value=3>Eagle Helmet</option>
-                <option value=4>Pink Helmet</option>
-                <option value=5>Blue Helmet</option>
-                <option value=6>Red Helmet</option>
-                <option value=7>Halo Helmet</option>
-                <option value=8>Stormtrooper Helmet</option>
-            </select> 
-
-            <br>
-            <br>    
+            <?php
+                makeOptionList("helmetPicker", $helmetRows, "hh" , $helmetText, false); 
+            ?>
 
             <!-- DRAG IS DISABLED
             <input type ="checkbox" id="dragCheck" checked><span id="dragLabel">Drag ON</span> 
@@ -90,58 +167,18 @@
 
             <br>
             <br>
-            <table id="ballData" style="width:100%">
-                <tr>
-                    <th>Pumpkin Level</th>
-
-                    <th>Max Speed (m/s)<button id="velocityGraph" disabled="true" hidden="hidden">graph</button></th> 
-                    <th>Percent Damaged (%)<button id="velocityGraph" disabled="true" hidden="hidden">graph</button></th> 
-                    <th>Energy - No Helmet (Joules)<button id="forceGraph" disabled="true" hidden ="hidden">graph</button></th>
-                    <th>Energy - With Helmet (Joules)<button id="helmetGraph" disabled="true" hidden ="hidden">graph</button></th>
-
-                    <!--
-                   <th>Max Speed</th> 
-                   <th>Pie Filling</th>
-                    -->
-
-
-                </tr>
-                <tr>
-                    <td id="1r">A</td>
-                    <td id="1v">--</td>
-                    <td id="1p">--</td>
-                    <td id="1f">--</td>
-                    <td id="1h">--</td>
-                </tr>
-                <tr>
-                    <td id="2r">B</td>
-                    <td id="2v">--</td>
-                    <td id="2p">--</td>
-                    <td id="2f">--</td>
-                    <td id="2h">--</td>
-                </tr>
-                <tr>
-                    <td id="3r">C</td>
-                    <td id="3v">--</td>
-                    <td id="3p">--</td>
-                    <td id="3f">--</td>
-                    <td id="3h">--</td>
-                </tr>
-                <tr>
-                    <td id="4r">D</td>
-                    <td id="4v">--</td>
-                    <td id="4p">--</td>
-                    <td id="4f">--</td>
-                    <td id="4h">--</td>
-                </tr>
-                <tr>
-                    <td id="5r">E</td>
-                    <td id="5v">--</td>
-                    <td id="5p">--</td>
-                    <td id="5f">--</td>
-                    <td id="5h">--</td>
-                </tr>                   
-            </table> 
+            <span id="mainTable" style="display:block;">
+                <?php 
+                    makeTable($table1ID, $table1Columns, $table1Rows, $table1HeaderText, $table1rowLabels, $table1rowText)
+                ?>
+            </span>
+            
+            <span id="altTable" style="display:none;">
+                <?php 
+                    makeTable($table2ID, $table2Columns, $table2Rows, $table2HeaderText, $table2rowLabels, $table2rowText)
+                ?>
+            </span>
+            
             <button id="clearTable">Clear Table</button>
 
 

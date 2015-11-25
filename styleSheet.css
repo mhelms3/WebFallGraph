@@ -23,7 +23,7 @@
     width: 100%;        
 }
 
-#ticMessage{
+[id$="Message"]{
     margin-top: 20px;
     margin-right: 20px;
     height: 50px;
@@ -31,11 +31,11 @@
     float: left;    
 }
 
-#ticPicker{
+[id$="Picker"]{
     margin-top: 20px;
     height: 50px;
-    width: 70px;        
-    font-size: 100%;   
+    width: 145px;        
+    font-size: 80%;   
 }
 
 #startStop{    

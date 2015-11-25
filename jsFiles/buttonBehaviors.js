@@ -5,7 +5,7 @@
 function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics, mySayings)
 {
     
-                  startStop.addEventListener('click', function(evt) {                                  
+                startStop.addEventListener('click', function(evt) {                                  
                         toggleMove(context, rig, ball, myScreen, myFlags, myTimer, myPhysics, mySayings);
                     }, false);
                     
@@ -13,7 +13,13 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                      //change number of tics
                 ticPicker.addEventListener('change', function(evt) {            
                     ball.tics=document.getElementById('ticPicker').value;            
-                    ball.setTicAngle(rig.maxTicNumber);
+                    ball.setTicAngle(myFlags);
+                    drawScene(context, rig, ball, 1, myScreen, myFlags);
+                }, false);
+                
+                parkPicker.addEventListener('change', function(evt) {            
+                    ball.tics=document.getElementById('parkPicker').value;            
+                    ball.setTicAngle(myFlags);
                     drawScene(context, rig, ball, 1, myScreen, myFlags);
                 }, false);
                 
@@ -102,9 +108,38 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                     {
                         document.getElementById('rightPane').style.display = "block";  
                         myFlags.hiddenControlsFlag = false;
-                        
                     } 
+                    
+                    if (myFlags.displayAltFlag)
+                    {
+                        document.getElementById('ticPickerSpan').style.display = "none";
+                        document.getElementById('parkPickerSpan').style.display = "block";
+                        document.getElementById('mainTable').style.display = "none";
+                        document.getElementById('altTable').style.display = "block";
+                    }
+                    else
+                    {
+                        document.getElementById('ticPickerSpan').style.display = "block";
+                        document.getElementById('parkPickerSpan').style.display = "none";
+                        document.getElementById('mainTable').style.display = "block";
+                        document.getElementById('altTable').style.display = "none";
+                    }
+                    
+                    if (ball.helmet == 0)
+                    {
+                        document.getElementById('helmetMessage').style.visibility = "hidden";      
+                        document.getElementById('helmetPicker').style.visibility = "hidden";
+                        document.getElementById('helmetPicker').disabled=true;
+                    }
+                    else
+                    {
+                        document.getElementById('helmetMessage').style.visibility = "visible";
+                        document.getElementById('helmetPicker').style.visibility = "visible";
+                        document.getElementById('helmetPicker').disabled=false;    
+                    }
                 };
+                
+                
                 
                 passcodeInput.addEventListener('click', function(evt) {
                     this.value = "";
@@ -139,14 +174,13 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                     myFlags.percentFlag=false;
                     myFlags.sensorFlag=false;
                     myFlags.helmetFlag = false;
-                    checkVisible();
+                    myFlags.displayAltFlag = false;
                     ball.tics=document.getElementById('ticPicker').value;            
-                    ball.setTicAngle(rig.maxTicNumber);
+                    ball.setTicAngle(myFlags);
                     ball.helmet = 0;
+                    checkVisible();
                     drawScene(context, rig, ball, 1, myScreen, myFlags);
-                    document.getElementById('helmetMessage').style.visibility = "hidden";      
-                    document.getElementById('helmetPicker').style.visibility = "hidden";
-                    document.getElementById('helmetPicker').disabled=true;
+                   
                 }, false);
 
                 //wreckage Sim
@@ -155,14 +189,13 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                     myFlags.percentFlag=true;
                     myFlags.sensorFlag=false;
                     myFlags.helmetFlag = false;
-                    checkVisible();
+                    myFlags.displayAltFlag = false;
                     ball.tics=document.getElementById('ticPicker').value;                            
-                    ball.setTicAngle(rig.maxTicNumber);
+                    ball.setTicAngle(myFlags);
                     ball.helmet = 0;
+                    checkVisible();
                     drawScene(context, rig, ball, 1, myScreen, myFlags);
-                    document.getElementById('helmetMessage').style.visibility = "hidden";      
-                    document.getElementById('helmetPicker').style.visibility = "hidden";
-                    document.getElementById('helmetPicker').disabled=true;
+                    
                 }, false);
                 
                 scenario3.addEventListener('click', function(evt) {
@@ -170,14 +203,13 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                     myFlags.percentFlag=false;
                     myFlags.sensorFlag=true;
                     myFlags.helmetFlag = false;
-                    checkVisible();
+                    myFlags.displayAltFlag = false;
                     ball.tics=document.getElementById('ticPicker').value;                            
-                    ball.setTicAngle(rig.maxTicNumber);
+                    ball.setTicAngle(myFlags);
                     ball.helmet = 0;
+                    checkVisible();
                     drawScene(context, rig, ball, 1, myScreen, myFlags);
-                    document.getElementById('helmetMessage').style.visibility = "hidden";      
-                    document.getElementById('helmetPicker').style.visibility = "hidden";
-                    document.getElementById('helmetPicker').disabled=true;
+                    
                 }, false);
                 
                 //helmet Sim
@@ -186,14 +218,25 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                     myFlags.percentFlag=false;
                     myFlags.sensorFlag=true;                    
                     myFlags.helmetFlag = true;
-                    checkVisible();
+                    myFlags.displayAltFlag = false;
                     ball.tics=document.getElementById('ticPicker').value;                            
-                    ball.setTicAngle(rig.maxTicNumber);
+                    ball.setTicAngle(myFlags);
                     ball.helmet = document.getElementById('helmetPicker').value;
-                    document.getElementById('helmetMessage').style.visibility = "visible";
-                    document.getElementById('helmetPicker').style.visibility = "visible";
-                    document.getElementById('helmetPicker').disabled=false;      
-                    
+                    checkVisible();
+                    drawScene(context, rig, ball, 1, myScreen, myFlags);
+                }, false);
+                
+                
+                 scenario5.addEventListener('click', function(evt) {
+                    myFlags.wreckageFlag = true;
+                    myFlags.percentFlag = false;
+                    myFlags.sensorFlag = true;                    
+                    myFlags.helmetFlag = false;
+                    myFlags.displayAltFlag = true;
+                    ball.tics=document.getElementById('parkPicker').value;                            
+                    ball.setTicAngle(myFlags);
+                    ball.helmet = 0;
+                    checkVisible();
                     drawScene(context, rig, ball, 1, myScreen, myFlags);
                 }, false);
 

@@ -70,6 +70,7 @@ var flags = function(){
     
     this.trickFlag=false;    
     this.messageFlag = false;
+    this.displayAltFlag = false;
     
     this.passcode = 1;
 };

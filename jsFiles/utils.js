@@ -32,7 +32,7 @@ function init(context, ball, rig, myScreen, myFlags, mySayings){
                 
                 rig.radiusOfLine = ball.originY - rig.pivotY;  
                 ball.tics=document.getElementById('ticPicker').value;            
-                ball.setTicAngle(rig.maxTicNumber);
+                ball.setTicAngle(myFlags);
                 
                 myScreen.yArcEdge = rig.pivotY+4+(rig.radiusOfLine+35)*Math.cos(Math.PI*.25);
                 myScreen.xArcEdge = rig.pivotX-9+(rig.radiusOfLine+35)*Math.sin(Math.PI*.25);
@@ -95,8 +95,8 @@ function disableStuff()
                 $( "#ticPicker").attr('disabled', 'disabled');                                        
                 $( "#helmetPicker").attr('disabled', 'disabled');      
                 document.getElementById('clearTable').disabled=true;
-                document.getElementById('velocityGraph').disabled=true;
-                document.getElementById('forceGraph').disabled=true;
+                //document.getElementById('velocityGraph').disabled=true;
+                //document.getElementById('forceGraph').disabled=true;
                 
                 document.getElementById('scenario1').disabled=true;
                 document.getElementById('scenario2').disabled=true;
@@ -116,9 +116,9 @@ function enableStuff(myFlags)
                 $( "#ticPicker").removeAttr('disabled');   
                 $( "#helmetPicker").removeAttr('disabled');   
                 document.getElementById('clearTable').disabled=false;  
-                document.getElementById('velocityGraph').disabled=false;                
-                if(myFlags.wreckageFlag)
-                    document.getElementById('forceGraph').disabled=false;
+               //document.getElementById('velocityGraph').disabled=false;                
+               // if(myFlags.wreckageFlag)
+                    //document.getElementById('forceGraph').disabled=false;
                 
                 if(myFlags.passcode>0)
                     document.getElementById('scenario1').disabled=false;

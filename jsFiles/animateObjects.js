@@ -45,20 +45,20 @@ function drawPendulum(mySayings, myScreen, myFlags, myPhysics, myTimer, ball, ri
                 //fudgeF = Math.abs(ball.velocity) + fudgeV +.04*ball.tics;
                 //forceBall = (fudgeF*fudgeF*ball.ballMass)/10;
                  
-                var forceV = ball.velocity*ball.velocity; 
-                forceBall = (forceV*ball.ballMass)/10;
+                var squaredV = ball.velocity*ball.velocity; 
+                kinEnergyBall = (squaredV*ball.ballMass)/10;
                 
                 if (ball.helmet >0)
                 {
-                    forceBall -= (ball.helmet*.837)*(ball.ballMass/5);
-                    if (forceBall < 0)
-                        forceBall = 0.001;
+                  kinEnergyBall -= (ball.helmet*.837)*(ball.ballMass/5);
+                    if (kinEnergyBall < 0)
+                        kinEnergyBall = 0.001;
                     forceCell = ball.tics+"h";
                 }
                 
-                if (forceBall > ball.maxForceBall) 
+                if (kinEnergyBall > ball.maxForceBall) 
                 {
-                    ball.maxForceBall = forceBall;
+                    ball.maxForceBall = kinEnergyBall;
                     percentDamaged = ball.maxForceBall*7.4/(ball.ballMass/5);
                     if (myFlags.percentFlag)
                         document.getElementById(percentCell).textContent=Math.round(percentDamaged);                                
@@ -94,7 +94,7 @@ function toggleMove(context, rig, ball, myScreen, myFlags, myTimer, myPhysics, m
         myFlags.shatterFlag = false;
         ball.reset();        
         myFlags.arcFlag = true;
-        ball.setTicAngle(rig.maxTicNumber);
+        ball.setTicAngle(myFlags);
         drawScene(context, rig, ball, 1, myScreen, myFlags);
         enableStuff(myFlags);     
         myFlags.moveFlag = false;

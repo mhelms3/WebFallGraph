@@ -75,7 +75,7 @@ function drawScene(context, rig, ball, blur, screen, myFlags)
                 context.fillStyle = "black";
                 context.globalCompositeOperation = "source-over";
                 
-                traceArcPath(context, ball, rig, .50, myFlags.wreckageFlag, screen); //drawtheArc
+                traceArcPath(context, ball, rig, .50, myFlags, screen); //drawtheArc
                 
                 /*context.save();
                     context.fillStyle = "rgba(255,255,0,1)"; 
