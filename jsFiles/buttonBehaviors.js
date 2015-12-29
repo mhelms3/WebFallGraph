@@ -18,8 +18,10 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                 }, false);
                 
                 parkPicker.addEventListener('change', function(evt) {            
-                    ball.tics=document.getElementById('parkPicker').value;            
+                    var opt = document.getElementById('parkPicker');
+                    ball.tics=opt.value;            
                     ball.setTicAngle(myFlags);
+                    myScreen.altLabel = opt.options[ball.tics-1].text; 
                     drawScene(context, rig, ball, 1, myScreen, myFlags);
                 }, false);
                 
@@ -83,12 +85,13 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
 
                 //clear data table
                 clearTable.addEventListener('click', function(evt) {            
-                    document.getElementById('velocityGraph').disabled=true;         
-                    document.getElementById('forceGraph').disabled=true;
+                    //document.getElementById('velocityGraph').disabled=true;         
+                    //document.getElementById('forceGraph').disabled=true;
                     clearColumn("v", 5);
                     clearColumn("f", 5);
                     clearColumn("h", 5);
                     clearColumn("p", 5);
+                    clearColumn("pf", 5);
                 }, false);
                 
                 function checkPasscode(n)
@@ -96,7 +99,6 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                     if (n>myFlags.passcode)
                     {
                         myFlags.passcode = n;
-                        console.log(myFlags.passcode);
                         enableStuff(myFlags);
                     }
                     document.getElementById('passcodeInput').style.color = "green";  
@@ -147,20 +149,19 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                 }, false);
                 
                 passcodeInput.addEventListener('keyup', function(evt) {
-                    var inputString = this.value;
-                    console.log(inputString);
+                    var strng = this.value;
+                    inputString = strng.toUpperCase();
                     switch (inputString) {
-                    case "two":
+                    case "HOMER":
                         checkPasscode(2);
-                        this.style.color = "green";
                         break;
-                    case "three":
+                    case "EPIC":
                         checkPasscode(3);
                         break;
-                    case "four":
+                    case "POEM":
                         checkPasscode(4);
                         break;
-                    case "five":
+                    case "ODYSSEY":
                         checkPasscode(5);
                         break;
                     default:
@@ -233,8 +234,11 @@ function enableButtons(context, rig, ball, myScreen, myFlags, myTimer, myPhysics
                     myFlags.sensorFlag = true;                    
                     myFlags.helmetFlag = false;
                     myFlags.displayAltFlag = true;
-                    ball.tics=document.getElementById('parkPicker').value;                            
+                    
+                    var opt = document.getElementById('parkPicker');
+                    ball.tics=opt.value;            
                     ball.setTicAngle(myFlags);
+                    myScreen.altLabel = opt.options[ball.tics-1].text; 
                     ball.helmet = 0;
                     checkVisible();
                     drawScene(context, rig, ball, 1, myScreen, myFlags);

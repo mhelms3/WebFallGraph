@@ -94,6 +94,8 @@ function disableStuff()
                 document.getElementById('startStop').textContent="End Simulation";
                 $( "#ticPicker").attr('disabled', 'disabled');                                        
                 $( "#helmetPicker").attr('disabled', 'disabled');      
+                $( "#parkPicker").attr('disabled', 'disabled');      
+
                 document.getElementById('clearTable').disabled=true;
                 //document.getElementById('velocityGraph').disabled=true;
                 //document.getElementById('forceGraph').disabled=true;
@@ -115,6 +117,7 @@ function enableStuff(myFlags)
                 document.getElementById('startStop').textContent="Begin Simulation";
                 $( "#ticPicker").removeAttr('disabled');   
                 $( "#helmetPicker").removeAttr('disabled');   
+                $( "#parkPicker").removeAttr('disabled');   
                 document.getElementById('clearTable').disabled=false;  
                //document.getElementById('velocityGraph').disabled=false;                
                // if(myFlags.wreckageFlag)

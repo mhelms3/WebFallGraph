@@ -30,8 +30,9 @@ function drawPendulum(mySayings, myScreen, myFlags, myPhysics, myTimer, ball, ri
         //if((Math.abs(ball.velocity)+fudgeV)>ball.maxVelocity)
         //    ball.maxVelocity=Math.abs(ball.velocity)+fudgeV;                
         if((Math.abs(ball.velocity))>ball.maxVelocity)
-            ball.maxVelocity=Math.abs(ball.velocity);                
-        reportVelocity(context, ball.velocity, ball.maxVelocity, ball.tics);
+            ball.maxVelocity=Math.abs(ball.velocity);       
+        if(!myFlags.displayAltFlag)
+            reportVelocity(context, ball.velocity, ball.maxVelocity, ball.tics);
         ball.previousAngle = ball.angle;   
         //console.log("WreckFlag:"+wreckageFlag);
 
@@ -55,6 +56,9 @@ function drawPendulum(mySayings, myScreen, myFlags, myPhysics, myTimer, ball, ri
                         kinEnergyBall = 0.001;
                     forceCell = ball.tics+"h";
                 }
+                
+                if(myFlags.displayAltFlag)
+                    forceCell = ball.tics+"pf";
                 
                 if (kinEnergyBall > ball.maxForceBall) 
                 {
@@ -102,7 +106,10 @@ function toggleMove(context, rig, ball, myScreen, myFlags, myTimer, myPhysics, m
     }
     else
     {
-        ball.tics = document.getElementById('ticPicker').value;                    
+        if (myFlags.displayAltFlag)
+            ball.tics = document.getElementById('parkPicker').value;                    
+        else
+            ball.tics = document.getElementById('ticPicker').value;                    
         ball.velocity=0;                       
         pendulumSim(mySayings, myScreen, myFlags, myPhysics, myTimer, ball, rig, context);
         disableStuff();

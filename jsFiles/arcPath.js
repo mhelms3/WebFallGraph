@@ -76,4 +76,24 @@
                         }
                     }
                 }
+                else
+                {
+                    context.save();
+                                context.lineWidth = ticWidth;                    
+                                context.strokeStyle = 'rgba(255,255,0,1)';
+                                context.translate(rig.pivotX, rig.pivotY);
+                                context.rotate(ball.startingAngle);
+                                context.beginPath();
+                                    context.moveTo(0, rig.radiusOfLine-ticLength/2);
+                                    context.lineTo(0, rig.radiusOfLine+ticLength/2);                        
+                                context.stroke();                                             
+                                context.font = 'bold 16pt Calibri';
+                                context.fillStyle = 'yellow';
+                                context.rotate(-ball.startingAngle);
+                                var calcx = -rig.radiusOfLine*(Math.sin(ball.startingAngle))-50;
+                                var calcy = rig.radiusOfLine*(Math.cos(ball.startingAngle)-1);
+                                context.translate(calcx, calcy);
+                                context.fillText(myScreen.altLabel, 0, rig.radiusOfLine+ticLength+20);
+                    context.restore();
+                }
             };

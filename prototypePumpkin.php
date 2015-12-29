@@ -19,13 +19,15 @@
     
     $table2ID = "altData";
     $table2Columns = 2;
-    $table2Rows = 8;
-    $table2rowLabels = array("r", "f");
-    $table2rowText = array("Park 1", "Park 2", "Park 3", " Park 4", "Park 5", "Park 6", "Park 7", "Park 8");
+    $table2Rows = 5;
+    $table2rowLabels = array("pr", "pf");
+    $table2rowText = array("Rabbit Run", "Crocodile Cove", "Pyramid Parks", "Lunar Launchpad", "The Big Kahuna");
     $table2HeaderText = array("Park", "Energy - (Joules)");
     
     $helmetRows = 8;
-    $helmetText = array("Black Helmet", "Green Helmet", "Eagle Helmet", "Pink Helmet", "Blue Helmet", "Red Helmet", "Halo Helmet", "Stormtrooper Helmet");
+    //$helmetText = array("Black Helmet", "Green Helmet", "Eagle Helmet", "Pink Helmet", "Blue Helmet", "Red Helmet", "Halo Helmet", "Stormtrooper Helmet");
+    $helmetText = array("Red Helmet", "Pink Helmet", "Black Helmet", "Blue Helmet", "Stormtrooper Helmet", "Eagle Helmet", "Halo Helmet", "Green Helmet");
+    $helmetValue = array(6, 4, 1, 5, 8, 3, 7, 2);
                     
     
 
@@ -62,7 +64,7 @@ function makeTable($tableID, $colSize, $rowSize, $headerText, $rowIDs, $rowText)
                 echo("</table>");
 };
 
-function makeOptionList ($listName, $listLength, $listIDs, $listText, $isVisible)
+function makeOptionList ($listName, $listLength, $listIDs, $listText, $isVisible, $values)
 {
     echo('<select id="');
     echo($listName);
@@ -80,7 +82,10 @@ function makeOptionList ($listName, $listLength, $listIDs, $listText, $isVisible
         echo($listIDs);
         echo($i+1);
         echo('" value=');
-        echo($i+1);
+        if($values == null)
+            echo($i+1);
+        else
+            echo($values[$i]);
         echo(">");
         echo($listText[$i]);
         echo("</option>");
@@ -140,31 +145,32 @@ function makeOptionList ($listName, $listLength, $listIDs, $listText, $isVisible
 
         <div id="rightPane"  style="display:none;">
 
-            <button id="startStop">Begin Simulation</button>
-            <br>
+            
             <span id="ticPickerSpan" style="display:block;">
                 <text id="ticMessage">Choose where to start the flying pumpkin</text>
                 <?php
-                    makeOptionList("ticPicker", $table1Rows, "tp" , $table1rowText, true); 
+                    makeOptionList("ticPicker", $table1Rows, "tp" , $table1rowText, true, null); 
                 ?>
             </span>
             
             <span id="parkPickerSpan" style="display:none;">
                 <text id="parkMessage">Choose which park to test</text>
                 <?php
-                    makeOptionList("parkPicker", $table2Rows, "pp" , $table2rowText, true); 
+                    makeOptionList("parkPicker", $table2Rows, "pp" , $table2rowText, true, null); 
                 ?>
             </span>
            
             <text id="helmetMessage" visibility="hidden">Choose which helmet to use</text>
             <?php
-                makeOptionList("helmetPicker", $helmetRows, "hh" , $helmetText, false); 
+                makeOptionList("helmetPicker", $helmetRows, "hh" , $helmetText, false, $helmetValue); 
             ?>
+            <br>
 
             <!-- DRAG IS DISABLED
             <input type ="checkbox" id="dragCheck" checked><span id="dragLabel">Drag ON</span> 
             -->
-
+            <button id="startStop">Begin Simulation</button>
+            
             <br>
             <br>
             <span id="mainTable" style="display:block;">

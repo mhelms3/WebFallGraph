@@ -43,6 +43,18 @@
     font-size: 100%;    
 }
 
+#altData{
+    width: 400px;
+}
+
+[id$="pr"]
+{
+   width: 150px;
+}
+[id$="pf"] {
+    width: 100px;
+}
+
 #bottomPane{
     margin: 0px;
     height: auto;

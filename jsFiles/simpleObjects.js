@@ -18,6 +18,8 @@ var screenObject = function(bh, bw){
         this.backGroundImage[1].src = "imageFiles/labBackground.png";
         this.backGroundImage[2] = new Image();
         this.backGroundImage[2].src = "imageFiles/cityBackground3.png";
+        
+        this.altLabel = "";
      };
 
 

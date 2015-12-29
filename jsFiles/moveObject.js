@@ -151,9 +151,8 @@ var moveObject = function(bs, bm, x, y, vx, vy)
             
             moveObject.prototype.setTicAngle = function(myFlags) 
             {
-                console.log(this.tics);
                 normalAngles = [0.1806686,0.3654094,0.5578684,0.76556, 1, 0];
-                altAngles = [.15, .44, .61, .76, .86, .89, .99, .11, .75, .94];
+                altAngles = [.15, .44, .61, .76, .92, .89, .99, .11, .75, .94];
                 var ratioA;
                 
                 if (myFlags.displayAltFlag)
@@ -163,7 +162,6 @@ var moveObject = function(bs, bm, x, y, vx, vy)
                 //this.angle = (Math.PI/2)*(this.tics/maxTicNumber);
                 this.angle = (Math.PI/2)*ratioA;
                 this.startingAngle = this.angle;
-                console.log(ratioA +" A"+this.angle);
             };
             
             moveObject.prototype.update = function(myTimer, myPhysics, myFlags, myScreen, rig) 
